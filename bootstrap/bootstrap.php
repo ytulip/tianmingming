@@ -35,3 +35,4 @@ function psr_doncare_autoload($call){
 }
 
 spl_autoload_register('psr_doncare_autoload');
+include index_path . '/bootstrap/routes.php';

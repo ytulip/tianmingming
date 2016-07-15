@@ -5,6 +5,7 @@
  * date: 2016-07-14
  */
 define('app_path','./app');
+define('index_path',__DIR__);
 require __DIR__.'/bootstrap/bootstrap.php';
 $app = new App();
 $app->start();
