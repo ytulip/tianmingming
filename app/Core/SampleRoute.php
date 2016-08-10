@@ -6,9 +6,18 @@
 class SampleRoute{
     //保存例实例在此属性中
     private static $_instance;
+    private $_route;
+
     //构造函数声明为private,防止直接创建对象
     private function __construct()
     {
+        //从?和#开始把字符串截取
+        $request_uri = $_SERVER['REQUEST_URI'];
+        $qMarkPos = strpos($request_uri,'?');
+        if($qMarkPos !== false){
+            $request_uri = substr($request_uri,0,$qMarkPos);
+        }
+        $this->_route = $request_uri;
     }
     //单例方法
     public static function singleton()
@@ -33,7 +42,11 @@ class SampleRoute{
      * @param callable $fun
      */
     public function get($route,Closure $fun){
-
+        if($route == $this->_route){
+            $fun();
+            exit;
+        }
+        return;
     }
 
     //阻止用户复制对象实例
@@ -43,6 +56,6 @@ class SampleRoute{
     }
 
     public function exec(){
-        echo 'route';
+        include_once app_path . '/routes.php';
     }
 }
