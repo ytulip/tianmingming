@@ -35,3 +35,5 @@ function psr_doncare_autoload($call){
 }
 
 spl_autoload_register('psr_doncare_autoload');
+require_once index_path . '/core/Twig-1.24.1/lib/Twig/Autoloader.php';
+Twig_Autoloader::register();

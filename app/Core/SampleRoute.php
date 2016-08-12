@@ -49,6 +49,17 @@ class SampleRoute{
         return;
     }
 
+    /**
+     * @param $route
+     * @param $controller
+     */
+    public function controller($route,$controller){
+//        call_user_func_array([$controller, $name]);
+
+        $funName = 'index';
+        return $controller::$funName();
+    }
+
     //阻止用户复制对象实例
     public function __clone()
     {
