@@ -15,6 +15,7 @@ class ViewServer{
         $loader = new Twig_Loader_Filesystem(resource_path . '/views');
         $this->_twig = new Twig_Environment($loader, array(
             'cache' => storage_path . '/views',
+            'debug' => true,
         ));
     }
     //单例方法
@@ -48,7 +49,7 @@ class ViewServer{
     }
 
     public function show($tmpPath,$data){
-        echo $this->_twig->render('index.html', $data);
+        echo $this->_twig->render($tmpPath, $data);
         exit;
     }
 

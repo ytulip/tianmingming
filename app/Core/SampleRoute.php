@@ -7,6 +7,7 @@ class SampleRoute{
     //保存例实例在此属性中
     private static $_instance;
     private $_route;
+    private $_route_args;
 
     //构造函数声明为private,防止直接创建对象
     private function __construct()
@@ -18,6 +19,7 @@ class SampleRoute{
             $request_uri = substr($request_uri,0,$qMarkPos);
         }
         $this->_route = $request_uri;
+        $this->_route_args = explode('/',$this->_route);
     }
     //单例方法
     public static function singleton()
@@ -56,7 +58,8 @@ class SampleRoute{
     public function controller($route,$controller){
 //        call_user_func_array([$controller, $name]);
 
-        $funName = 'index';
+        $funName = end($this->_route_args);
+//        var_dump($funName);
         return $controller::$funName();
     }
 
