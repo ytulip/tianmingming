@@ -34,6 +34,22 @@ function psr_doncare_autoload($call){
     return;
 }
 
+
+/**
+ * @param $src
+ * @param $filter
+ * @return array
+ */
+function array_only($src,$filter){
+    $res = array();
+    foreach($src as $key=>$val){
+        if(in_array($key,$filter)){
+            $res[$key] = $val;
+        }
+    }
+    return $res;
+}
+
 spl_autoload_register('psr_doncare_autoload');
 require_once index_path . '/core/Twig-1.24.1/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
