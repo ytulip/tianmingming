@@ -20,7 +20,7 @@ $(function(){
     function refreshWork(){
         veil.down();
         $.ajax({
-            url:'/worklist',
+            url:'/app.php/worklist',
             data:{type:$('input[name="type"]').val()},
             dataType:'json',
             async:false,
@@ -32,7 +32,7 @@ $(function(){
                     $.each(data.data,function(ind,obj){
                         afterHtml += `<div class="col-md-3 col-sm-3 col-xs-6 work-item" data-id="`+obj.id+`">
                         <div class="dashboard-div-wrapper bk-clr-one work-show" style="position:relative;">
-                        <img src="/images/work/`+obj.name+`" style="width: 100%;height: 100%;"/>
+                        <img  ondblclick="location.href='/app.php/workdetail?id=`+obj.id+`'" src="/images/work/`+obj.name+`" style="width: 100%;height: 100%;"/>
                         </div>
                         </div>`;
                     });
@@ -54,7 +54,7 @@ $(function(){
         if(this.value){
             var formData = new FormData($("#data-form")[0]);
             $.ajax({
-                url:'/savework',
+                url:'/app.php/savework',
                 data:formData,
                 type:'post',
                 contentType: false,
@@ -88,7 +88,7 @@ $(function(){
         var id = $(this).parents('.work-item').attr('data-id');
         var target = $(this);
         $.ajax({
-            url:'/workdelete',
+            url:'/app.php//workdelete',
             data:{id:id},
             dataType:'json',
             async:false,

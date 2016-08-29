@@ -4,6 +4,7 @@ class App{
      * app start
      */
     public function start(){
-        Route::exec();
+        $route = SampleRoute::singleton();
+        $route->exec();
     }
 }

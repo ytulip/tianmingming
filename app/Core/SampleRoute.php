@@ -60,7 +60,8 @@ class SampleRoute{
 
         $funName = end($this->_route_args);
 //        var_dump($funName);
-        return $controller::$funName();
+//        return $controller::$funName();
+        call_user_func_array(array($controller, $funName),array());
     }
 
     //阻止用户复制对象实例

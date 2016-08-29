@@ -1,6 +1,4 @@
 <?php
-Route::get('/work/more',function(){
-
-});
-Route::controller('/index','IndexController');
+$route = SampleRoute::singleton();
+$route->controller('/index','IndexController');
 

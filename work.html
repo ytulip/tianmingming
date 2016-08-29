@@ -205,7 +205,7 @@
         jQuery(document).ready(function($){
             function refreshWork(){
                 $.ajax({
-                    url:'/worklist',
+                    url:'/app.php/worklist',
                     data:{type:$('input[name="type"]').val()},
                     dataType:'json',
                     async:false,
@@ -213,7 +213,7 @@
                         if(data.status){
                             var afterHtml = '';
                             $.each(data.data,function(ind,obj){
-                                afterHtml += '<div class="a_project um_all um_design col-md-4 col-sm-6 col-xs-12 umScaleIn to_animate"><div class="hp-project col-project-third"><a href="javascript:void(0)"><div class="featured-image"><img src="/images/work/'+obj.name+'"></div></a></div></div>';
+                                afterHtml += '<div class="a_project um_all um_design col-md-4 col-sm-6 col-xs-12 umScaleIn to_animate"><div class="hp-project col-project-third"><a target="_blank" href="/workdetail.html?id='+obj.id+'"><div class="hover-hp"><div class="um_center_vertically"><h3>'+obj.title+'</h3></div></div><div class="featured-image"><img src="/images/work/'+obj.name+'"></div></a></div></div>';
                             });
                             $('#work-panel').html(afterHtml);
                         }

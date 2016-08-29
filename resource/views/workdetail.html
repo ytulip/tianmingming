@@ -1,0 +1,24 @@
+{% extends "master.html" %}
+{% block style %}
+<style>
+#work-detail-panel{
+    text-align: center;
+}
+.detail-img{
+    max-width: 100%;
+}
+</style>
+{% endblock%}
+{% block function %}WORK DETAIL<button class="button button-large button-plain button-border button-square" id="work-delete"><i class="fa fa-save" id="work-detail-save"></i></button><input type="text" class="form-control" name="title" value="{{ title }}" placeholder="describe this work">{% endblock %}
+{% block contentwrap %}
+<input type="hidden" name="id" value="{{ id }}"/>
+<div class="row" id="work-detail-panel">
+    <!--<img class="detail-img" new-img="1" src="/images/work/1472173877.jpg">-->
+    {% for img in imgs%}
+    <img class="detail-img" src="{{ img }}" new-img="{{ img }}"/>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block script %}
+<script src="/public/js/workdetail.js"></script>
+{% endblock %}

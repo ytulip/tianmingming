@@ -1,11 +1,20 @@
 <?php
 class IndexController{
+
+    private $_view;
+    private function __construct(){
+        $this->_view = ViewServer::singleton();
+    }
+
+
     public function index(){
-        return View::show('index.html',array());
+        $view = ViewServer::singleton();
+        return $view->show('index.html',array());
     }
 
     public function admin(){
-        return View::show('admin.html',array());
+        $view = ViewServer::singleton();
+        return $view->show('admin.html',array());
     }
 
     public function savework(){
@@ -14,6 +23,13 @@ class IndexController{
         $workModel = new WorkModel();
         $workModel->add(array(array('name'=>$filename,'type'=>IndexController::input('type',1))));
         $workModel->save();
+        echo json_encode(array('status'=>true,'path'=>'/images/work/' . $filename));
+        exit;
+    }
+
+    public function saveworkdetailimg(){
+        $filename = time() . '.jpg';
+        PostImage::save(index_path . '/images/work/' . $filename);
         echo json_encode(array('status'=>true,'path'=>'/images/work/' . $filename));
         exit;
     }
@@ -27,8 +43,31 @@ class IndexController{
         if($type){
             $workModel->where(array('type'=>$type));
         }
+        $workModel->orderDesc();
         $res = $workModel->get();
         echo json_encode(array('status'=>true,'data'=>$res));
+        exit;
+    }
+
+    public function workdetail(){
+        $view = ViewServer::singleton();
+        $workModel = new WorkModel();
+        $workModel->where(array('id'=>IndexController::input('id')));
+        $info = $workModel->get();
+        return $view->show('workdetail.html',array('id'=>IndexController::input('id'),'title'=>$info[0]['title'],'imgs'=>explode(',',$info[0]['imgs'])));
+    }
+
+    /**
+     * 保存工作详情
+     */
+    public function saveworkdetail(){
+        if(!IndexController::input('id')){
+            echo json_encode(array('status'=>false));
+            exit;
+        }
+        $workModel = new WorkModel();
+        $workModel->where(array('id'=>IndexController::input('id')));          $workModel->update(array('title'=>IndexController::input('title'),'imgs'=>trim(IndexController::input('imgs'),',')));
+        echo json_encode(array('status'=>true));
         exit;
     }
 
@@ -44,10 +83,32 @@ class IndexController{
         exit;
     }
 
+    /**
+     * 工作详情
+     */
+    public function workdetailinfo(){
+        if(!IndexController::input('id')){
+            echo json_encode(array('status'=>false));
+            exit;
+        }
+
+        $workModel = new WorkModel();
+        $workModel->where(array('id'=>IndexController::input('id')));
+        $info = $workModel->get();
+
+        if(isset($info[0])){
+            echo json_encode(array('status'=>true,'data'=>$info[0]));
+            exit;
+        }else{
+            echo json_encode(array('status'=>false));
+            exit;
+        }
+    }
+
 
     static public function input($index,$default=''){
         if(isset($_REQUEST[$index]) && ($_REQUEST[$index] !== '')){
-            return $_REQUEST[$index];
+            return htmlspecialchars($_REQUEST[$index]);
         }else{
             return $default;
         }

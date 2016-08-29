@@ -12,6 +12,6 @@ class View{
      */
     static public function __callstatic($name,$arguments){
         $route = ViewServer::singleton();
-        return call_user_func_array([$route, $name], $arguments);
+        return call_user_func_array(array($route, $name), $arguments);
     }
 }

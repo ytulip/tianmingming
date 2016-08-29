@@ -2,12 +2,13 @@
 abstract class BaseModel{
     protected $_table;
     private $_list;
-    protected $_base_cloumn = ['id','addtime'];
+    protected $_base_cloumn = array('id','addtime');
     protected $_extend_cloumn;
     protected $_column;
     protected $_list_index = 0;
     private $_storage_path;
     private $_where_condition = array();
+    private $_order_desc = false;
 
     public function __construct(){
         if(!$this->_table){
@@ -68,7 +69,42 @@ abstract class BaseModel{
                 }
             }
         }
-        return array_values($tmpList);
+
+        if($this->_order_desc){
+            $tmp = array_values($tmpList);
+            return array_reverse($tmp);
+        }else{
+            return array_values($tmpList);
+        }
+    }
+
+    public function update($data){
+        $tmpList = $this->_list;
+        foreach($this->_where_condition as $key=>$val){
+            foreach($tmpList as $k=>$v){
+                if($v[$key] != $val){
+                    unset($tmpList[$k]);
+                }
+            }
+        }
+
+        $tmpList = array_values($tmpList);
+        foreach($tmpList as $key=>$val){
+            foreach($data as $k=>$v){
+                $tmpList[$key][$k] = $v;
+            }
+        }
+
+        foreach($tmpList as $key=>$val){
+            foreach($this->_list as $k=>$v){
+                if($val['id'] == $v['id']){
+                    $this->_list[$k] = $val;
+                    break;
+                }
+            }
+        }
+
+        $this->save();
     }
 
     public function delete(){
@@ -80,5 +116,9 @@ abstract class BaseModel{
             }
         }
         $this->_list = array_values($this->_list);
+    }
+
+    public function orderDesc(){
+        $this->_order_desc = true;
     }
 }
