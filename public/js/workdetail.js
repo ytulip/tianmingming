@@ -6,6 +6,9 @@ function dropHandleEvent(event){
     event.preventDefault();
     if(event.type == 'drop'){
         file = event.dataTransfer.files[0];
+        if(!file){
+            return;
+        }
         //console.log(file.type);
         if(file.type.search('image') === -1){
             alert('不支持的文件格式!');
@@ -44,8 +47,6 @@ contentWrapper.addEventListener('dragover',dropHandleEvent,false);
 contentWrapper.addEventListener('drop',dropHandleEvent,false);
 contentWrapper.addEventListener('dragleave',dropHandleEvent,false);
 
-
-
 $('body').on('click','#work-detail-save',function(){
     /**
      * 工作详情图片
@@ -74,6 +75,32 @@ $('body').on('click','#work-detail-save',function(){
         },
         error:function(){
             alert('网络异常！');
+        }
+    });
+});
+
+
+/*加载删除按钮*/
+$(function(){
+    var anchorHtml = `<a id="scrollUp" style="position: fixed; z-index: 2147483647; display: block;"><i class="fa fa-trash-o"></i></a>`;
+    $('body').append(anchorHtml);
+
+
+    var scrollUpTarget = null;
+
+    $('body').on('dragstart','.detail-img',function(event){
+        scrollUpTarget = $(this);
+    });
+
+    $('body').on('dragend','.detail-img',function(event){
+        scrollUpTarget = null;
+    });
+
+    $('body').on('drop','#scrollUp',function(event){
+        event.stopPropagation();
+        event.preventDefault();
+        if(scrollUpTarget){
+            scrollUpTarget.remove();
         }
     });
 });
