@@ -54,7 +54,10 @@ class IndexController{
         $workModel = new WorkModel();
         $workModel->where(array('id'=>IndexController::input('id')));
         $info = $workModel->get();
-        return $view->show('workdetail.html',array('id'=>IndexController::input('id'),'title'=>$info[0]['title'],'imgs'=>explode(',',$info[0]['imgs'])));
+        $describe = htmlspecialchars_decode(urldecode($info[0]['describe']));
+//        var_dump($describe);
+//        exit;
+        return $view->show('workdetail.html',array('id'=>IndexController::input('id'),'title'=>$info[0]['title'],'imgs'=>explode(',',$info[0]['imgs']),'describe'=>$describe));
     }
 
     /**
@@ -66,7 +69,7 @@ class IndexController{
             exit;
         }
         $workModel = new WorkModel();
-        $workModel->where(array('id'=>IndexController::input('id')));          $workModel->update(array('title'=>IndexController::input('title'),'imgs'=>trim(IndexController::input('imgs'),',')));
+        $workModel->where(array('id'=>IndexController::input('id')));          $workModel->update(array('title'=>IndexController::input('title'),'imgs'=>trim(IndexController::input('imgs'),','),'describe'=>IndexController::input('describe')));
         echo json_encode(array('status'=>true));
         exit;
     }

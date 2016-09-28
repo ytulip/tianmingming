@@ -61,7 +61,7 @@ $('body').on('click','#work-detail-save',function(){
 
     $.ajax({
         url:'/app.php/saveworkdetail',
-        data:{id:$('input[name="id"]').val(),title:$('input[name="title"]').val(),imgs:imgs},
+        data:{id:$('input[name="id"]').val(),title:$('input[name="title"]').val(),imgs:imgs,describe:encodeURI($('#describe').html())},
         dataType:'json',
         async:false,
         success:function(data){

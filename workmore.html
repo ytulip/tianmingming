@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+
+        #work-panel{
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 1200px) {
+            .container-fluid {
+                padding-left: 150px;
+                padding-right: 150px;
+            }
+        }
+
+
+        @media only screen and (max-width: 768px) {
+            .container-fluid {
+                padding-left: 80px;
+                padding-right: 80px;
+            }
+        }
+
+
+        @media only screen and (max-width: 480px) {
+            .container-fluid {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+        .right-border, .left-border, .bottom-border, .top-border {
+            background: #f2f2f2;
+        }
+
+        .top-border{ position: fixed;
+            height: 25px;
+            width: 100%;
+            top: 0;
+            z-index: 99999999999;}
+        .right-border{ position: fixed;
+            width: 25px;
+            height: 100%;
+            right: 0;
+            z-index: 99999999999;}
+        .bottom-border{ position: fixed;
+            height: 25px;
+            width: 100%;
+            bottom: 0;
+            z-index: 99999999999;}
+        .left-border{ position: fixed;
+            width: 25px;
+            height: 100%;
+            left: 0;
+            z-index: 99999999999;}
+
+
+        @media only screen and (max-width: 1200px) {
+            .top-border, .left-border, .right-border, .bottom-border {
+                display: none;
+            }
+        }
+
+    </style>
+    <title>TMM个人网站 |   works</title>
+    <link href="/public/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="/public/assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE  -->
+    <link href="/public/assets/css/style.css" rel="stylesheet" />
+    <link href="/public/assets/css/buttons.css" rel="stylesheet" />
+    <link href="/public/css/animate.css" rel="stylesheet" />
+    <style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}
+
+    .container-fluid {
+        padding-left: 150px;
+        padding-right: 150px;
+        padding-top: 60px;
+    }
+
+
+    @media only screen and (max-width: 1200px) {
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+            padding-top: 60px;
+        }
+    }
+
+
+    @media only screen and (max-width: 768px) {
+        .container-fluid {
+            padding-left: 80px;
+            padding-right: 80px;
+            padding-top: 35px;
+        }
+    }
+
+
+    @media only screen and (max-width: 480px) {
+        .container-fluid {
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 10px;
+        }
+    }
+
+
+    .menu-list{
+
+    }
+
+    .menu-list li a{
+        font-size: 27px;
+        padding-bottom: 8px;
+        color: #ffffff;
+        display: block;
+    }
+
+    .menu-close{
+        text-align: center;
+        display: block;
+        border: 2px solid #000;
+        height: 45px;
+        width: 45px;
+        line-height: 45px;
+        position: absolute;
+        top: 25px;
+        right: 25px;
+    }
+
+
+    .menu-close i{
+        font-size: 27px;
+        color: #ffffff;
+    }
+
+
+    @media only screen and (max-width: 1200px) {
+        .menu-close{
+            text-align: center;
+            display: block;
+            border: 2px solid #000;
+            height: 45px;
+            width: 45px;
+            line-height: 45px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+
+    #describe{
+        text-align: left;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        font-family: "微软雅黑", "黑体", Arial, Helvetica, sans-serif;
+    }
+
+    .row{margin-left: 0;margin-right: 0;}
+
+
+
+    </style>
+</head>
+<body>
+<div class="top-border"></div>
+<div class="right-border"></div>
+<div class="bottom-border"></div>
+<div class="left-border"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-2 col-md-2"><img src="/images/limilogo.png" style="height: 45px;width: auto;"/></div>
+        <div class="col-xs-8 col-md-8"><h3 style="text-align: center;margin: 0;line-height: 45px;">work</h3></div>
+        <div class="col-xs-2 col-md-2" id="menu-drawer">
+            <a href="#" id="menu-open" style="text-align:center;display:block;border: 2px solid #000;height: 45px;width: 45px;line-height: 45px;margin: 0 auto;"><i class="fa fa-reorder"></i></a>
+        </div>
+    </div>
+
+    <div class="row" id="work-panel">
+
+    </div>
+</div>
+</body>
+<script src="/public/assets/js/jquery-1.11.1.js"></script>
+<script type="text/javascript">
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+
+    function HTMLEncode(html)
+    {
+        var temp = document.createElement ("div");
+        (temp.textContent != null) ? (temp.textContent = html) : (temp.innerText = html);
+        var output = temp.innerHTML;
+        temp = null;
+        return output;
+    }
+    function HTMLDecode(text)
+    {
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        var output = temp.innerText || temp.textContent;
+        temp = null;
+        return output;
+    }
+
+
+
+    jQuery(document).ready(function($){
+        function refreshWork(){
+            $.ajax({
+                url:'/app.php/workdetailinfo',
+                data:{id:getQueryString('id')},
+                dataType:'json',
+                async:false,
+                success:function(data){
+                    if(data.status){
+                        var afterHtml = '';
+                        //这里拼装简介
+                        afterHtml = `<div id="describe">`+
+                                decodeURI(HTMLDecode(data.data.describe))
+                                +`</div>`;
+                        var imgArr = data.data.imgs.split(',');
+                        console.log(imgArr);
+                        $.each(imgArr,function(ind,obj){
+                            afterHtml += '<img style="max-width: 100%;margin-bottom:28px;" src="'+obj+'">';
+                        });
+                        $('#work-panel').html(afterHtml);
+                        $('#work-title').html(data.data.title);
+                    }
+                },
+                error:function(){
+                }
+            });
+        }
+        refreshWork();
+    });
+
+</script>
+<script>
+    var closeMenu = false;
+    function menuBack(){
+        closeMenu = true;
+        $('.veil').addClass('fadeOutLeft');
+    }
+
+    $(function(){
+        /**
+         * 加载内容
+          */
+
+
+    });
+
+    $('#menu-open').click(function(){
+        var innerHtml = `<div class="veil" style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:99;background-color:#000000;opacity:.4;"> <div class="cell" style="width:100%;height:100%;display:table;">
+        <div class="card" style="display:table-cell;text-align:center;    vertical-align: middle;">
+        <ul class="menu-list" style="list-style:none;padding:0;">
+            <li><a href="/index.html">HOME</a></li>
+            <li><a href="/work.html">WORK</a></li>
+        <li><a href="javascript:menuBack();"><i class="fa fa-angle-double-left"></i></a></li>
+        </ul>
+        </div>
+        </div>
+        </div>`;
+        $('body').append(innerHtml);
+        closeMenu = false;
+        $('.veil').addClass('animated bounceInUp');
+        $('.veil').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            if(closeMenu){
+                $('.veil').remove();
+            }
+//            console.log('1');
+        });
+    });
+</script>
+</html>

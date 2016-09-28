@@ -31,6 +31,9 @@
 <input type="hidden" name="id" value="{{ id }}"/>
 <div class="row" id="work-detail-panel">
     <!--<img class="detail-img" new-img="1" src="/images/work/1472173877.jpg">-->
+    <div style="padding: 15px;">
+        <div class="form-control" id="describe" rows="3" style="overflow-y:visible ;min-height: 90px;height: auto;text-align: left;" contenteditable="true">{{ describe|raw  }}</div>
+        </div>
     {% for img in imgs%}
     <img class="detail-img" src="{{ img }}" new-img="{{ img }}"/>
     {% endfor %}
