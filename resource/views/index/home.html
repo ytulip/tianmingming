@@ -1,0 +1,14 @@
+{% extends "_layout/index.html" %}
+{% block style %}
+<style>
+    body{min-height: 100%;background-color: #282828;}
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(function(){
+        $('body').append('<div style="position: fixed;top:84px;bottom:84px;right: 0;left: 0;"><div style="display: table;width: 100%;height: 100%;"><div style="display: table-cell;vertical-align: middle;text-align: center;"><img src="/public/images/name.png" style="width: 37%;"/></div></div></div><div style="position: fixed;bottom: 24px;right: 0;left: 0;text-align: center;"><a target="_blank" style="color:#5a5a5a" href="http://www.miitbeian.gov.cn/">粤ICP备16091051号-1</a></div>');
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>明明同学</title>
+    <link rel="stylesheet" href="/public/assets/css/bootstrap.css"/>
+    <link href="/public/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="/public/css/animate.css" rel="stylesheet" />
+    <style>
+        a{text-decoration: none !important;}
+    </style>
+    <style>
+        body{
+            font-family: "微软雅黑", serif;
+        }
+        .sandbox{padding: 25px;}
+        .sandbox-header{display: flex;}
+        .sandbox-header > div{
+            flex: 1;
+            height: 34px;
+        }
+
+        .logo-wrapper{text-align: left}
+        .menu-wrapper{text-align: right}
+        .sandbox-header a{overflow: hidden;display: inline-block;height: 100%;}
+        .sandbox-header img{height: 100%;}
+
+        .sandbox-section{text-align: center;padding: 27px 0;}
+        .work-panel{
+            width: auto;
+            margin: 0 auto;
+            display: inline-block;
+        }
+
+        .one-item{
+            display: inline-block;
+            width: auto;
+        }
+
+        .one-item > div{
+            display: inline-block;
+        }
+
+        .one-item-right{margin-left: 40px;}
+        .one-item ::after{word-wrap: break-word;}
+        .one-horizontal{
+            margin-top: 17px;
+        }
+
+        .one-horizontal > div{
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .one-horizontal{
+            vertical-align: middle;
+        }
+
+        .one-horizontal label{
+            font-family: PingFangSC-Regular;
+            font-size: 14px;
+            color: #333333;
+            line-height: 14px;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+        .one-horizontal select{
+
+        }
+
+        .one-horizontal input,.one-horizontal textarea,.one-horizontal select{
+            background: #FFFFFF;
+            border: 1px solid #979797;
+            border-radius: 2px;
+            padding: 6px;
+        }
+
+        .one-horizontal select{
+            width: 140px;
+        }
+
+        .one-horizontal input,.one-horizontal textarea{
+            width: 460px;
+        }
+
+        #upload:hover{
+            background: #FFD4D4 !important;
+        }
+
+        .veil a{
+            font-family: FZLTXHB--B51-0;
+            font-size: 27px;
+            color: #FFFFFF;
+        }
+
+        .veil ul li:nth-child(1) a{
+            color:#FFD48B;
+        }
+    </style>
+    {% block style %}{% endblock %}
+</head>
+<body>
+<div class="sandbox">
+    <div class="sandbox-header">
+        <div class="logo-wrapper"><a><img src="/public/images/logo.png"/></a></div>
+        {% block pageTitle %}
+        {% endblock %}
+        <div class="menu-wrapper"><a id="menu-open"><img src="/public/images/menu.png"/></a></div>
+    </div>
+    {% block body %}{% endblock %}
+</div>
+</body>
+<script src="/public/assets/js/jquery-1.11.1.js"></script>
+<script>
+    var closeMenu = false;
+    function menuBack(){
+        closeMenu = true;
+        $('.veil').addClass('fadeOutLeft');
+    }
+    $('#menu-open').click(function(){
+        var innerHtml = `<div class="veil" style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:99;background-color:#000000;"><div style="position:absolute;top:32px;right:32px;"><a href="javascript:menuBack();"><img src="/public/images/close.png" style="width:26px;height:26px;"/></a></div> <div class="cell" style="width:100%;height:100%;display:table;">
+        <div class="card" style="display:table-cell;text-align:center;    vertical-align: middle;">
+        <ul class="menu-list" style="list-style:none;padding:0;font-size:24px;">
+        <li><a href="/home">HOME</a></li>
+        <li><a href="/work.html">ABOUNT ME</a></li>
+        <li><a href="/works">WORK</a></li>
+        <li><a href="/work.html">CONTACT</a></li>
+        </ul>
+        </div>
+        </div>
+        </div>`;
+        $('body').append(innerHtml);
+        closeMenu = false;
+        $('.veil').addClass('animated bounceInUp');
+        $('.veil').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            if(closeMenu){
+                $('.veil').remove();
+            }
+//            console.log('1');
+        });
+    });
+</script>
+{% block script %}
+{% endblock %}
+</html>

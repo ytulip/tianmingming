@@ -1,5 +1,25 @@
 <?php
 class IndexController{
+
+    public function addwork(){
+        return View::show('add_work.html',array());
+    }
+
+    public function home(){
+        return View::show('index/home.html',array());
+    }
+
+    public function work(){
+        return View::show('index/work.html',array());
+    }
+
+    /**
+     * 公众号
+     */
+    public function works(){
+        return View::show('index/works.html',array());
+    }
+
     public function index(){
         return View::show('index.html',array());
     }
@@ -23,13 +43,21 @@ class IndexController{
      */
     public function worklist(){
         $type = IndexController::input('type');
-        $workModel = new WorkModel();
         if($type){
-            $workModel->where(array('type'=>$type));
+            $list = DB::select('select * from work where type = ' . intval($type) . ' order by id desc');
+        }else{
+            $list = DB::select('select * from work order by id desc');
         }
-        $res = $workModel->get();
-        echo json_encode(array('status'=>true,'data'=>$res));
+        echo json_encode(array('status'=>true,'data'=>$list));
         exit;
+//        $type = IndexController::input('type');
+//        $workModel = new WorkModel();
+//        if($type){
+//            $workModel->where(array('type'=>$type));
+//        }
+//        $res = $workModel->get();
+//        echo json_encode(array('status'=>true,'data'=>$res));
+//        exit;
     }
 
 

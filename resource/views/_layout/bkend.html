@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <link rel="stylesheet" href="/public/assets/css/bootstrap.css"/>
+    <link href="/public/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="/public/css/animate.css" rel="stylesheet" />
+    <style>
+        a{text-decoration: none !important;}
+    </style>
+</head>
+<body>
+    {% block body %}{% endblock %}
+</body>
+<script src="/public/assets/js/jquery-1.11.1.js"></script>
+<script>
+    var closeMenu = false;
+    function menuBack(){
+        closeMenu = true;
+        $('.veil').addClass('fadeOutLeft');
+    }
+    $('#menu-open').click(function(){
+        var innerHtml = `<div class="veil" style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:99;background-color:#000000;opacity:.4;"> <div class="cell" style="width:100%;height:100%;display:table;">
+        <div class="card" style="display:table-cell;text-align:center;    vertical-align: middle;">
+        <ul class="menu-list" style="list-style:none;padding:0;font-size:24px;">
+        <li><a href="/index.html">作品列表</a></li>
+        <li><a href="/work.html">添加作品</a></li>
+        <li><a href="javascript:menuBack();"><i class="fa fa-angle-double-left"></i></a></li>
+        </ul>
+        </div>
+        </div>
+        </div>`;
+        $('body').append(innerHtml);
+        closeMenu = false;
+        $('.veil').addClass('animated bounceInUp');
+        $('.veil').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            if(closeMenu){
+                $('.veil').remove();
+            }
+//            console.log('1');
+        });
+    });
+</script>
+</html>

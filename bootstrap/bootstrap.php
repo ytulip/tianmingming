@@ -34,6 +34,26 @@ function psr_doncare_autoload($call){
     return;
 }
 
+/*读取配置文件*/
+/**
+ * 先这样这里面肯定是有bug的
+ * @param $name
+ * @param string $value
+ * @return string
+ */
+function env($name,$value=''){
+    $content = file_get_contents(index_path . '/.env');
+    /*正则匹配*/
+    $matchs = [];;
+    $parrter = '%^'.$name.'\s*=\s*(.+)%m';
+    preg_match_all($parrter,$content,$matchs);
+    if(isset($matchs[1][0])){
+        return trim($matchs[1][0]);
+    }else{
+        return $value;
+    }
+}
+
 
 /**
  * @param $src
