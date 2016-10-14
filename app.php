@@ -4,6 +4,8 @@
  * you can visit www.tianmingming.com for more information
  * date: 2016-07-14
  */
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 define('app_path','./app');
 define('index_path',__DIR__);
 define('storage_path', index_path . '/storage');
