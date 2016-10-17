@@ -10,7 +10,13 @@ class IndexController{
     }
 
     public function work(){
-        return View::show('index/work.html',array());
+        $object = new WorkModel(6);
+        return View::show('index/work.html',array(
+            'type'=>$object->type,
+            'title'=>$object->title,
+            'describe'=>$object->describe,
+            'imgs'=>json_decode($object->imgs,true)
+        ));
     }
 
     /**

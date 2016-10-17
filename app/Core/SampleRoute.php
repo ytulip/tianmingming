@@ -60,6 +60,7 @@ class SampleRoute{
 
         $funName = end($this->_route_args);
 //        var_dump($funName);
+        $funName = $funName?$funName:'home';
         return $controller::$funName();
     }
 

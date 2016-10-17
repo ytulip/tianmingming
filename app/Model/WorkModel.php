@@ -1,4 +1,8 @@
 <?php
-class WorkModel extends BaseModel{
-    protected $_extend_cloumn = ['name','type'];
+/**
+ * Class WorkModel
+ */
+class WorkModel extends Model{
+    protected $_table = 'work';
+    protected $_primary_key = 'id';
 }

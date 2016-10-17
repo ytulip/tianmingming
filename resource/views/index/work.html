@@ -1,1 +1,74 @@
 {% extends "_layout/index.html" %}
+{% block style%}
+<style>
+
+    .img-show{
+        width: 100%;
+    }
+
+    .work-detail p{
+        font-size: 16px;
+    }
+
+    .img-show-item{
+        margin-bottom: 7px;
+    }
+
+    .img-show-item img{
+        width: 100%;
+    }
+
+    .veil ul li:nth-child(3) a{
+        color:#FFD48B;
+    }
+
+    .works-type li:nth-child({{ type }}) a{
+        color:#FFD48B;
+    }
+</style>
+{% endblock %}
+{% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;font-size: 26px;font-family: FZLTXHB--B51-0;color: #333333;">WORKS</span></div>{% endblock %}
+{% block body %}
+<div class="sandbox-content">
+    <div class="works-menu">
+        <ul class="works-type">
+            <li><a>全部</a></li>
+            <li><a>UI</a></li>
+            <li><a>动效</a></li>
+            <li><a>动画</a></li>
+            <li><a>摄影</a></li>
+        </ul>
+    </div>
+    <div class="work-detail">
+        <h2>{{ title }}</h2>
+        <p>{{ describe }}</p>
+        <div class="img-show">
+            {% for img in imgs %}
+            <div class="img-show-item"><img src="{{ img }}"/></div>
+            {% endfor %}
+            <!--<div class="img-show-item"><img src="http://zhuyan.me/img/example/1.jpg"/></div>-->
+            <!--<div class="img-show-item"><img src="http://zhuyan.me/img/example/2.jpg"/></div>-->
+            <!--<div class="img-show-item"><img src="http://zhuyan.me/img/example/3.jpg"/></div>-->
+            <!--<div class="img-show-item"><img src="http://zhuyan.me/img/example/4.jpg"/></div>-->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/public/assets/js/imgLiquid.js"></script>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+
+    /*加载works*/
+
+
+
+
+</script>
+{% endblock %}

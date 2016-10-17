@@ -9,6 +9,8 @@ class DB{
      * 重写select,DB::select();
      */
     static public function select($sqlStatement){
+//        var_dump($sqlStatement);
+//        exit;
         $pdoStatment = self::query($sqlStatement);
         header("Content-type: text/html; charset=utf-8");
         $row = $pdoStatment -> fetchAll(PDO::FETCH_OBJ);
