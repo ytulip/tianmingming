@@ -1,0 +1,15 @@
+{
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "MM\\": "framework/"
+    }
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
+    }
+  }
+}

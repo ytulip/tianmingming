@@ -1,6 +1,12 @@
 {% extends "_layout/index.html" %}
 {% block style%}
 <style>
+    .veil ul li:nth-child(3) a{
+        color:#FFD48B;
+    }
+
+
+    .works-type li:nth-child({{ type }}) a{  color:#FFD48B;  }
 </style>
 {% endblock %}
 {% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;font-size: 26px;font-family: FZLTXHB--B51-0;color: #333333;">WORKS</span></div>{% endblock %}
@@ -8,11 +14,11 @@
 <div class="sandbox-content">
 <div class="works-menu">
     <ul class="works-type">
-        <li><a>全部</a></li>
-        <li><a>UI</a></li>
-        <li><a>动效</a></li>
-        <li><a>动画</a></li>
-        <li><a>摄影</a></li>
+        <li><a href="works">全部</a></li>
+        <li><a href="/works?type=2">UI</a></li>
+        <li><a href="/works?type=3">动效</a></li>
+        <li><a href="/works?type=4">动画</a></li>
+        <li><a href="/works?type=5">摄影</a></li>
     </ul>
 </div>
 <div class="works-list">
@@ -42,14 +48,14 @@
     function refreshWork(){
         $.ajax({
             url:'/worklist',
-            data:{id:getQueryString('id')},
+            data:{type:getQueryString('type')},
             dataType:'json',
             success:function(data){
                 if(data.status){
                     var listItem = '';
                     console.log(data.data);
                     $.each(data.data,function(key,val){
-                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><div class="img-data" img-data="'+val.face_img+'"/></div></div></div>';
+                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><div class="img-data" data-id="'+val.id+'" img-data="'+val.face_img+'"/></div></div></div>';
                     });
 //                    for(var item  in data.data){
 //                        console.log(item);
@@ -60,7 +66,8 @@
 
                     $('.img-data').each(function(){
                         var src = $(this).attr('img-data');
-                        $(this).replaceWith('<img class="work-item" src="'+src+'"/>');
+                        var id = $(this).attr('data-id');
+                        $(this).replaceWith('<a href="/work?id="'+id+'><img class="work-item" src="'+src+'"/></a>');
                     });
 
                     $(".img-wrapper").imgLiquid();
@@ -93,7 +100,7 @@
             if($(this).find('.work-item-shade').length){
                 return;
             }else{
-                $(this).append('<div class="work-item-shade" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:99;background-color:#000000;opacity: .6;"><div style="display: table;height: 100%;width: 100%;"><div style="display: table-cell;vertical-align: middle"><h3>'+$(this).attr('data-title')+'</h3><p>'+$(this).attr('data-abstract')+'</p></div></div></div>');
+                $(this).append('<div class="work-item-shade" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:99;background-color:#000000;opacity: .6;"><a style="display: table;height: 100%;width: 100%;" href="/work?id='+$(this).attr('data-id')+'"><div style="display: table-cell;vertical-align: middle"><h3>'+$(this).attr('data-title')+'</h3><p>'+$(this).attr('data-abstract')+'</p></div></a></div>');
                 return;
             }
         });
@@ -103,10 +110,6 @@
 //            console.log(4);
             $(this).find('.work-item-shade').remove();
         });
-
-        $('body').on('click','.img-wrapper',function(){
-            location.href = '/work?id=' + $(this).attr('data-id');
-        })
 
         refreshWork();
     });

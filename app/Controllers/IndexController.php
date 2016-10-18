@@ -10,7 +10,7 @@ class IndexController{
     }
 
     public function work(){
-        $object = new WorkModel(6);
+        $object = new WorkModel(IndexController::input('id'));
         return View::show('index/work.html',array(
             'type'=>$object->type,
             'title'=>$object->title,
@@ -23,7 +23,9 @@ class IndexController{
      * 公众号
      */
     public function works(){
-        return View::show('index/works.html',array());
+        return View::show('index/works.html',array(
+            'type'=>IndexController::input('type',1)
+        ));
     }
 
     public function index(){
