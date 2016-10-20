@@ -16,4 +16,11 @@ class DB{
         $row = $pdoStatment -> fetchAll(PDO::FETCH_OBJ);
         return $row;
     }
+
+    /**
+     * 插入一条数据
+     */
+    static public function insert(){
+        
+    }
 }

@@ -37,13 +37,18 @@ class IndexController{
     }
 
     public function savework(){
-        $filename = time() . '.jpg';
+        $filename = \MM\Kits::getMillisecond() . '.jpg';
         PostImage::save(index_path . '/images/work/' . $filename);
-        $workModel = new WorkModel();
-        $workModel->add(array(array('name'=>$filename,'type'=>IndexController::input('type',1))));
-        $workModel->save();
-        echo json_encode(array('status'=>true,'path'=>'/images/work/' . $filename));
+        echo json_encode(array('status'=>true,'path'=>'/images/work/' . $filename,'type'=>IndexController::input('type',1)));
         exit;
+    }
+
+    /**
+     * 将一个work存储起来
+     */
+    public function storagework(){
+        $object = new WorkModel(IndexController::input('id'));
+        
     }
 
     /**
