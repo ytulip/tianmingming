@@ -11,7 +11,10 @@ class Model{
     public $_test = 123;
 
 
-    public function __construct($id){
+    public function __construct($id = null){
+        if($id === null){
+            return;
+        }
         $res = DB::select(sprintf("select * from %s where %s = %s",$this->_table,$this->_primary_key,$id));
         $this->_model_object = $res[0];
         return $this;
@@ -23,5 +26,12 @@ class Model{
         }else{
             return null;
         }
+    }
+
+    /**
+     * @param array $data
+     */
+    public function insert($data){
+        return DB::insert($this->_table,$data);
     }
 }

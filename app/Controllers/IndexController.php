@@ -47,8 +47,10 @@ class IndexController{
      * 将一个work存储起来
      */
     public function storagework(){
-        $object = new WorkModel(IndexController::input('id'));
-        
+        $object = new WorkModel();
+        $insertId = $object->insert(\MM\MArray::arrayOnly($_REQUEST,['title','abstract','describe','face_img','type','imgs']));
+        echo json_encode(['status'=>true,'data'=>$insertId]);
+        exit;
     }
 
     /**

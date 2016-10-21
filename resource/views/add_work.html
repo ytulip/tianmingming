@@ -266,7 +266,9 @@
             dataType:'json',
             data:data,
             success:function(data){
-
+                if(data.status){
+                    location.href = 'work?id=' + data.data;
+                }
             },
             error:function(){
 
