@@ -5,6 +5,13 @@ class IndexController{
         return View::show('add_work.html',array());
     }
 
+    public function deletework(){
+        $object = new WorkModel(IndexController::input('id'));
+        $object->delete();
+        echo json_encode(['status'=>true]);
+        exit;
+    }
+
     public function home(){
         return View::show('index/home.html',array());
     }
@@ -19,6 +26,12 @@ class IndexController{
         ));
     }
 
+
+    public function editworks(){
+        return View::show('editworks.html',array(
+            'type'=>IndexController::input('type',1)
+        ));
+    }
     /**
      * 公众号
      */

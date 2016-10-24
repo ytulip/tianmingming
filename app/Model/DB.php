@@ -12,9 +12,13 @@ class DB{
 //        var_dump($sqlStatement);
 //        exit;
         $pdoStatment = self::query($sqlStatement);
-        header("Content-type: text/html; charset=utf-8");
         $row = $pdoStatment -> fetchAll(PDO::FETCH_OBJ);
         return $row;
+    }
+
+    static public function delete($sqlStatement){
+        self::exec($sqlStatement);
+        return true;
     }
 
     /**

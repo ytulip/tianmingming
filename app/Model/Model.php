@@ -34,4 +34,9 @@ class Model{
     public function insert($data){
         return DB::insert($this->_table,$data);
     }
+
+
+    public function delete(){
+        return DB::delete(sprintf('delete from `%s` where %s = %s',$this->_table,$this->_primary_key,$this->id));
+    }
 }

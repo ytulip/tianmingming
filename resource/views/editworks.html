@@ -1,0 +1,175 @@
+{% extends "_layout/index.html" %}
+{% block style%}
+<style>
+    .veil ul li:nth-child(3) a{
+        color:#FFD48B;
+    }
+    .works-type li:nth-child({{ type }}) a{  color:#FFD48B;  }
+
+    .img-wrapper{
+        position: absolute;
+        top:6px;
+        right: 36px;
+        bottom: 6px;
+        left: 6px;
+    }
+
+    .img-editor-wrapper{
+        position: absolute;
+        top:6px;
+        right: 6px;
+        font-size: 24px;
+        width: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .img-editor-wrapper > div{
+        border: 1px solid #dadada;
+    }
+
+    .img-editor-wrapper a{
+        line-height: 30px;
+    }
+
+    .img-editor-wrapper a:hover{
+        font-size: 30px;
+    }
+
+
+
+</style>
+{% endblock %}
+{% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;font-size: 26px;font-family: FZLTXHB--B51-0;color: #333333;">WORKS</span></div>{% endblock %}
+{% block body %}
+<div class="sandbox-content">
+    <div class="works-menu">
+        <ul class="works-type">
+            <li><a href="editworks">全部</a></li>
+            <li><a href="/editworks?type=2">UI</a></li>
+            <li><a href="/editworks?type=3">动效</a></li>
+            <li><a href="/editworks?type=4">动画</a></li>
+            <li><a href="/editworks?type=5">摄影</a></li>
+        </ul>
+    </div>
+    <div class="works-list">
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/1.jpg"/></div></div></div>-->
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/2.jpg"/></div></div></div>-->
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/3.jpg"/></div></div></div>-->
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/4.jpg"/></div></div></div>-->
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/1.jpg"/></div></div></div>-->
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/2.jpg"/></div></div></div>-->
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/3.jpg"/></div></div></div>-->
+        <!--<div><div class="img-wrapper"><div class="img-data" img-data="http://zhuyan.me/img/example/4.jpg"/></div></div></div>-->
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/public/assets/js/imgLiquid.js"></script>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+    function editWork(obj){
+
+    }
+
+    function closeWork(obj){
+        console.log(obj);
+        var id = $(obj).attr('data-id');
+        var r=confirm("你确定要删除吗？");
+        if (r==true)
+        {
+            $.ajax({
+                url:'/deletework',
+                type:'post',
+                dataType:'json',
+                data:{id:id},
+                success:function(data){
+                    if(data.status){
+                        location.reload();
+                    }
+                },
+                error:function(){
+
+                }
+            });
+        }
+    }
+
+
+    /*加载works*/
+    function refreshWork(){
+        $.ajax({
+            url:'/worklist',
+            data:{type:getQueryString('type')},
+            dataType:'json',
+            success:function(data){
+                if(data.status){
+                    var listItem = '';
+                    console.log(data.data);
+                    $.each(data.data,function(key,val){
+                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><div class="img-data" data-id="'+val.id+'" img-data="'+val.face_img+'"/></div><div class="img-editor-wrapper"><div><a onclick="javascript:editWork(this);"><i class="fa fa-edit"></i></a></div><div><a onclick="javascript:closeWork(this);" data-id="'+val.id+'"><i class="fa fa-close"></i></a></div></div></div>';
+                    });
+//                    for(var item  in data.data){
+//                        console.log(item);
+//                        listItem += '<div><div class="img-wrapper"><div class="img-data" img-data="'+item.face_img+'"/></div></div></div>';
+//                    }
+                    $('.works-list').append(listItem);
+
+
+                    $('.img-data').each(function(){
+                        var src = $(this).attr('img-data');
+                        var id = $(this).attr('data-id');
+                        $(this).replaceWith('<a href="/work?id="'+id+'><img class="work-item" src="'+src+'"/></a>');
+                    });
+
+                    $(".img-wrapper").imgLiquid();
+//                    var afterHtml = '';
+//                    var imgArr = data.data.imgs.split(',');
+//                    console.log(imgArr);
+//                    $.each(imgArr,function(ind,obj){
+//                        afterHtml += '<img style="max-width: 100%;margin-bottom:28px;" src="'+obj+'">';
+//                    });
+//                    $('#work-panel').html(afterHtml);
+//                    $('#work-title').html(data.data.title);
+                }
+            },
+            error:function(){
+            }
+        });
+    }
+
+
+
+    $(function(){
+//        $('.img-data').each(function(){
+//            var src = $(this).attr('img-data');
+//            $(this).replaceWith('<img class="work-item" src="'+src+'"/>');
+//        });
+//
+//        $(".img-wrapper").imgLiquid();
+
+        $('body').on('mouseover','.img-wrapper',function(){
+            if($(this).find('.work-item-shade').length){
+                return;
+            }else{
+                $(this).append('<div class="work-item-shade" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:99;background-color:#000000;opacity: .6;"><a style="display: table;height: 100%;width: 100%;" href="/work?id='+$(this).attr('data-id')+'"><div style="display: table-cell;vertical-align: middle"><h3>'+$(this).attr('data-title')+'</h3><p>'+$(this).attr('data-abstract')+'</p></div></a></div>');
+                return;
+            }
+        });
+
+
+        $('body').on('mouseleave','.img-wrapper',function(){
+//            console.log(4);
+            $(this).find('.work-item-shade').remove();
+        });
+
+        refreshWork();
+    });
+</script>
+{% endblock %}
