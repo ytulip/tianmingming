@@ -21,6 +21,14 @@ class DB{
         return true;
     }
 
+
+    static public function update($query,$data){
+        self::setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = self::prepare($query);
+        $stmt->execute($data);
+        return true;
+    }
+
     /**
      * 插入一条数据
      */

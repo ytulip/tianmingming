@@ -35,6 +35,16 @@ class Model{
         return DB::insert($this->_table,$data);
     }
 
+    public function update($data){
+        $lists = '';
+        foreach($data as $key=>$val){
+            $lists .= " `$key` = :$key,";
+        }
+        $query = sprintf(' update %s set %s where `%s` = %s',$this->_table,trim($lists,','),
+$this->_primary_key,$this->__get($this->_primary_key));
+        return DB::update($query,$data);
+    }
+
 
     public function delete(){
         return DB::delete(sprintf('delete from `%s` where %s = %s',$this->_table,$this->_primary_key,$this->id));

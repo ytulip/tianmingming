@@ -5,6 +5,19 @@ class IndexController{
         return View::show('add_work.html',array());
     }
 
+    public function editorwork(){
+        $object = new WorkModel(IndexController::input('id'));
+        return View::show('editor_work.html',[
+            'id'=>$object->id,
+            'type'=>$object->type,
+            'title'=>$object->title,
+            'describe'=>$object->describe,
+            'face_img'=>$object->face_img,
+            'imgs'=>json_decode($object->imgs,true),
+            'abstract'=>$object->abstract
+        ]);
+    }
+
     public function deletework(){
         $object = new WorkModel(IndexController::input('id'));
         $object->delete();
@@ -53,6 +66,14 @@ class IndexController{
         $filename = \MM\Kits::getMillisecond() . '.jpg';
         PostImage::save(index_path . '/images/work/' . $filename);
         echo json_encode(array('status'=>true,'path'=>'/images/work/' . $filename,'type'=>IndexController::input('type',1)));
+        exit;
+    }
+
+
+    public function modifywork(){
+        $object = new WorkModel(IndexController::input('id'));
+        $object->update(\MM\MArray::arrayOnly($_REQUEST,['title','abstract','describe','face_img','type','imgs']));
+        echo json_encode(['status'=>true,'data'=>$object->id]);
         exit;
     }
 
