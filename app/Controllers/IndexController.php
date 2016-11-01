@@ -45,6 +45,24 @@ class IndexController{
             'type'=>IndexController::input('type',1)
         ));
     }
+
+    /**
+     * 重新排列works
+     */
+    public function reorderworks(){
+        /**
+         *
+         */
+        $arr = [];
+        $sql = 'update work set power = case ';
+        foreach(explode(',',IndexController::input('ids')) as $key=>$val){
+            $sql .= " when id = $val then $key";
+        }
+        $sql .= ' end';
+        DB::delete($sql);
+        echo json_encode(['status'=>true]);
+    }
+
     /**
      * 公众号
      */
@@ -93,9 +111,9 @@ class IndexController{
     public function worklist(){
         $type = IndexController::input('type');
         if($type){
-            $list = DB::select('select * from work where type = ' . intval($type) . ' order by id desc');
+            $list = DB::select('select * from work where type = ' . intval($type) . ' order by power asc,id desc');
         }else{
-            $list = DB::select('select * from work order by id desc');
+            $list = DB::select('select * from work order by power asc,id desc');
         }
         echo json_encode(array('status'=>true,'data'=>$list));
         exit;
