@@ -204,8 +204,6 @@
 
                                 ondropactivate: function (event) {
                                     // add active dropzone feedback
-//                                    console.log(event);
-//                                    console.log(event.target);
                                     event.target.classList.add('drop-active');
                                 },
                                 ondragenter: function (event) {
@@ -233,11 +231,15 @@
                                             dropzoneElement = event.target;
 
 
-                                    draggableElement.style = '';
+//                                    draggableElement.style = '';
                                     draggableElement.removeAttribute('data-x');
                                     draggableElement.removeAttribute('data-y');
-                                    console.log(draggableElement.outerHTML);
-                                    dropzoneElement.insertAdjacentHTML('beforeBegin',draggableElement.outerHTML);
+
+                                    var outerHTML = draggableElement.outerHTML;
+                                    //用这则替换掉work-list-item的style
+                                    outerHTML = outerHTML.replace(new RegExp('<div class="work-list-item"[^>]+>'),'<div class="work-list-item">');
+                                    console.log(outerHTML);
+                                    dropzoneElement.insertAdjacentHTML('beforeBegin',outerHTML);
 //                                    console.log(draggableElement);
                                     $(draggableElement).remove();
                                     reOrderShow();
