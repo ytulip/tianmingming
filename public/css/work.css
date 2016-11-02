@@ -33,28 +33,6 @@
     background-color: #d8d8d8;
 }
 
-@media only screen and (max-width: 3800px) {
-    .sandbox-content {
-        padding-left: 1130px;
-        padding-right: 1130px;
-    }
-}
-
-
-@media only screen and (max-width: 2400px) {
-    .sandbox-content {
-        padding-left: 650px;
-        padding-right: 650px;
-    }
-}
-
-
-@media only screen and (max-width: 1600px) {
-    .sandbox-content {
-        padding-left: 300px;
-        padding-right: 300px;
-    }
-}
 
 
 @media only screen and (max-width: 1200px) {
