@@ -139,6 +139,13 @@ class IndexController{
         exit;
     }
 
+    /**
+     * 关于我恩
+     */
+    public function about(){
+        return View::show('index/about.html',array());
+    }
+
 
     static public function input($index,$default=''){
         if(isset($_REQUEST[$index]) && ($_REQUEST[$index] !== '')){
