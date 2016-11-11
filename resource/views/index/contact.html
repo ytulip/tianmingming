@@ -1,0 +1,164 @@
+{% extends "_layout/index.html" %}
+{% block style %}
+<style>
+    body{min-height: 100%;background-color: #282828;}
+    .veil ul li:nth-child(4) a{
+        color:#FFD48B;
+    }
+    article{
+        font-family: "微软雅黑", serif;
+        font-size: 16px;
+        color: #FFFFFF;
+        line-height: 30px;
+    }
+
+    #contact-type{
+        display: block;
+        width: 300px;
+        font-size: 0;
+        padding: 0;
+    }
+
+    #contact-info{
+        display: block;
+        width: 300px;
+    }
+
+
+    #contact-type li{
+        display: inline-block;
+        font-size: 16px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid #747474;
+        cursor: pointer;
+    }
+
+    #contact-type li:nth-child(1){
+        text-align: left;
+        width: 30%;
+    }
+
+    #contact-type li:nth-child(2){
+        text-align: center;
+        width: 40%;
+    }
+
+    #contact-type li:nth-child(3){
+        text-align: right;
+        width: 30%;
+    }
+
+    .type-active{
+        color: #FFD48B !important;
+        border-bottom: 2px solid #FFD48B !important;
+    }
+
+    article{
+        margin-top: 17px;
+    }
+
+    .contact-info-item{text-align: left;}
+    .contact-info-item span{display: inline-block}
+
+    .contact-info-item span:nth-child(1){
+        min-width: 40px;
+    }
+
+    .contact-info-item span:nth-child(2){
+
+    }
+
+    .contact-info-item span:nth-child(3){
+        padding-left: 4px;
+        color: #FFD48B;
+    }
+
+    .text-control{
+        width: 390px;
+        margin-top: 14px;
+        padding: 7px;
+    }
+
+    article{
+        display: none;
+    }
+
+</style>
+{% endblock %}
+{% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;font-size: 26px;font-family: FZLTXHB--B51-0;color: #FFFFFF;">CONTACT</span></div>{% endblock %}
+{% block body %}
+<div class="sand-box-content" style="text-align: center; padding-top: 37px;">
+    <div style="display: inline-block;"><ul id="contact-type" style="color: #747474;list-style: none">
+        <li class="type-active" data-id="1">位置</li>
+        <li data-id="2">联系方式</li>
+        <li data-id="3">留言</li>
+    </ul></div>
+    <article data-id="1">
+        <img src="/images/map.png" style="width: 65%"/>
+    </article>
+    <article data-id="2">
+        <div style="display: inline-block" id="contact-info">
+        <div class="contact-info-item"><span>电话</span><span>:</span><span>18216285533</span></div>
+        <div class="contact-info-item"><span>邮箱</span><span>:</span><span>782877296@qq.com</span></div>
+        <div class="contact-info-item"><span>qq</span><span>:</span><span>782877296</span></div>
+        <div class="contact-info-item"><span>微信</span><span>:</span><span>Tmmandmm</span></div>
+            </div>
+    </article>
+    <article data-id="3">
+        <form id="data-form">
+            <div><input class="text-control" placeholder="您的称呼" style="background-color: #3b3b3b;border: none;" required="required" name="name"/></div>
+        <div><input class="text-control" placeholder="您的邮箱" style="background-color: #3b3b3b;border: none;" type="email" required="required" name="email"/></div>
+        <div><textarea class="text-control" placeholder="您的留言" style="background-color: #3b3b3b;border: none;min-height: 160px;" required="required" name="content"></textarea ></div>
+            <div><div class="text-control" style="margin-left: auto;
+    margin-right: auto;"><button id="send" style="background-color: #ffd488;border: none;padding: 4px 20px;cursor: pointer;color:#000000;border-radius: 4px;">发送</button></div></div>
+        </form>
+    </article>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    var currentTypeIndex = 1;
+
+    $('#send').click(function (e) {
+        var name = $('input[name="name"]').val();
+        var email = $('input[name="email"]').val();
+        var content = $('textarea[name="content"]').val();
+        if(name && email && content){
+            $("article[data-id=3]").html('sending...');
+
+            $.ajax({
+                url:'/sendmail',
+                type:'post',
+                data:$('#data-form').serialize(),
+                dataType:'json',
+                success:function(data){
+
+                },
+                error:function(data){
+                    alert('网络异常！');
+                }
+            });
+        }else{
+            alert('请填入完整信息！');
+        }
+        return false;
+    });
+
+    $('article[data-id="'+currentTypeIndex+'"]').show();
+
+    $('#contact-type li').mouseover(function(){
+        $('#contact-type li').removeClass('type-active');
+        $(this).addClass('type-active');
+    });
+    $('#contact-type li').click(function(){
+        currentTypeIndex = $(this).attr('data-id');
+        $('.sand-box-content article').hide();
+        console.log(currentTypeIndex);
+        $('article[data-id="'+currentTypeIndex+'"]').show();
+    })
+    $('#contact-type li').mouseleave(function(){
+        $('#contact-type li').removeClass('type-active');
+        $('#contact-type li:nth-child('+currentTypeIndex+')').addClass('type-active');
+    });
+</script>
+{% endblock %}
