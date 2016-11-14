@@ -151,7 +151,7 @@
                     var listItem = '';
                     console.log(data.data);
                     $.each(data.data,function(key,val){
-                        listItem += '<div class="work-list-item"><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><div class="img-data" data-id="'+val.id+'" img-data="'+val.face_img+'"/></div><div class="img-editor-wrapper"><div><a href="javascript:void(0)" data-href="/editorwork?id='+val.id+'"><i class="fa fa-edit"></i></a></div><div><a onclick="javascript:closeWork(this);" data-id="'+val.id+'"><i class="fa fa-close"></i></a></div></div></div>';
+                        listItem += '<div class="work-list-item"><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><div class="img-data" data-id="'+val.id+'" img-data="'+val.face_img+'"/></div><div class="img-editor-wrapper"><div><a href="/editorwork?id='+val.id+'"><i class="fa fa-edit"></i></a></div><div><a onclick="javascript:closeWork(this);" data-id="'+val.id+'"><i class="fa fa-close"></i></a></div></div></div>';
                     });
 //                    for(var item  in data.data){
 //                        console.log(item);

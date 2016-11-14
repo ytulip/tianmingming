@@ -146,6 +146,24 @@ class IndexController{
         return View::show('index/about.html',array());
     }
 
+    public function contact(){
+        return View::show('index/contact.html',array());
+    }
+
+
+    public function sendmail(){
+//        $to      = "35715872@qq.com";
+//        $from    = "35715872@qq.com";
+//        $subject = "来自tianmingming.com的留言";
+//        $body    = "这是测试邮件";
+        $content = sprintf("<p>称呼:%s</p><p>邮箱:%s</p><p>留言:%s</p>",IndexController::input('name'),IndexController::input('email'),IndexController::input('content'));
+
+        $mail    = new \MM\Mail();
+        $mail->send($content);
+        echo json_encode(['status'=>true,'data'=>'您的留言已送达，明明会及时给你回复！']);
+        exit;
+    }
+
 
     static public function input($index,$default=''){
         if(isset($_REQUEST[$index]) && ($_REQUEST[$index] !== '')){

@@ -83,6 +83,51 @@
         display: none;
     }
 
+    .loading{
+        margin-top: 60px;
+    }
+
+    /*动画*/
+    .loading span:nth-child(1){
+         filter: blur(0px);
+         animation: blur-text 1.5s 0s infinite linear alternate;
+    }
+
+    .loading span:nth-child(2){
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.2s infinite linear alternate;
+    }
+
+    .loading span:nth-child(3){
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.4s infinite linear alternate;
+    }
+
+    .loading span:nth-child(4){
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.6s infinite linear alternate;
+    }
+
+    .loading span:nth-child(5){
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.8s infinite linear alternate;
+    }
+
+    .loading span:nth-child(6){
+        filter: blur(0px);
+        animation: blur-text 1.5s 1s infinite linear alternate;
+    }
+
+    .loading span:nth-child(7){
+        filter: blur(0px);
+        animation: blur-text 1.5s 1.2s infinite linear alternate;
+    }
+
+    @keyframes blur-text {
+        0% {filter: blur(0px);}
+        100% {filter: blur(4px);}
+    }
+
 </style>
 {% endblock %}
 {% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;font-size: 26px;font-family: FZLTXHB--B51-0;color: #FFFFFF;">CONTACT</span></div>{% endblock %}
@@ -124,15 +169,15 @@
         var email = $('input[name="email"]').val();
         var content = $('textarea[name="content"]').val();
         if(name && email && content){
-            $("article[data-id=3]").html('sending...');
-
+            var requestData = $('#data-form').serialize();
+            $("article[data-id=3]").html('<div class="loading"><div class="loading-text"><span class="loading-text-words">S</span> <span class="loading-text-words">E</span> <span class="loading-text-words">N</span> <span class="loading-text-words">D</span> <span class="loading-text-words">I</span> <span class="loading-text-words">N</span> <span class="loading-text-words">G</span></div></div>');
             $.ajax({
                 url:'/sendmail',
                 type:'post',
-                data:$('#data-form').serialize(),
+                data:requestData,
                 dataType:'json',
                 success:function(data){
-
+                    $("article[data-id=3]").html('<div class="loading"><div class="loading-text">Send success!Will contact you ASAP!</div></div>');
                 },
                 error:function(data){
                     alert('网络异常！');
