@@ -66,7 +66,7 @@
     }
 
     .contact-info-item span:nth-child(2){
-
+        color:#747474;
     }
 
     .contact-info-item span:nth-child(3){
@@ -155,9 +155,11 @@
             margin-right: -25px;
         }
     }
+    .text-control:focus{outline:1px solid #FFD48B;}
+    .do-input{border: 1px solid #FFD48B;}
 </style>
 {% endblock %}
-{% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;font-size: 26px;font-family: FZLTXHB--B51-0;color: #FFFFFF;">CONTACT</span></div>{% endblock %}
+{% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;">CONTACT</span></div>{% endblock %}
 {% block body %}
 <div class="sand-box-content" style="text-align: center; padding-top: 37px;">
     <div style="display: inline-block;"><ul id="contact-type" style="color: #747474;list-style: none">
@@ -191,6 +193,12 @@
 {% block script %}
 <script>
     var currentTypeIndex = 1;
+
+//    $('.text-control').focus(function(e){
+//        $(this).addClass('do-input');
+//    }).blur(function(){
+//        $(this).removeClass('do-input');
+//    });
 
     $('#send').click(function (e) {
         var name = $('input[name="name"]').val();
