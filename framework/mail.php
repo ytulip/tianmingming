@@ -7,7 +7,7 @@ class Mail{
         //require 'PHPMailerAutoload.php';
 
         $mail = new \PHPMailer();
-
+        $mail->CharSet = "utf-8";
 //$mail->SMTPDebug = 3;                               // Enable verbose debug output
 
         $mail->isSMTP();                                      // Set mailer to use SMTP

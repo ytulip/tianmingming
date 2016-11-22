@@ -51,6 +51,32 @@
     }
 
 
+    $.createCache = function( requestFunction ) {
+        var cache = {};
+        return function( key, callback ) {
+            if ( !cache[ key ] ) {
+                cache[ key ] = $.Deferred(function( defer ) {
+                    requestFunction( defer, key );
+                }).promise();
+            }
+            return cache[ key ].done( callback );
+        };
+    }
+
+    $.loadImage = $.createCache(function( defer, url ) {
+        var image = new Image();
+        function cleanUp() {
+            image.onload = image.onerror = null;
+        }
+        defer.then( cleanUp, cleanUp );
+        image.onload = function() {
+            defer.resolve( url );
+        };
+        image.onerror = defer.reject;
+        image.src = url;
+    });
+
+
     /*加载works*/
     function refreshWork(){
         $.ajax({
@@ -62,7 +88,7 @@
                     var listItem = '';
                     console.log(data.data);
                     $.each(data.data,function(key,val){
-                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><div class="img-data" data-id="'+val.id+'" img-data="'+val.face_img+'"/></div></div></div>';
+                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><a href="/work?id="'+val.id+'><img class="work-item" img-data="'+val.face_img+'" src="/previewimg'+val.face_img+'"/></a></div></div></div>';
                     });
 //                    for(var item  in data.data){
 //                        console.log(item);
@@ -70,12 +96,25 @@
 //                    }
                     $('.works-list').append(listItem);
 
-
-                    $('.img-data').each(function(){
-                        var src = $(this).attr('img-data');
-                        var id = $(this).attr('data-id');
-                        $(this).replaceWith('<a href="/work?id="'+id+'><img class="work-item" src="'+src+'"/></a>');
+                    $('.work-item').each(function(){
+                        var self = this;
+                        $.loadImage($(this).attr('img-data')).done(function(){
+                            var realImg = $(self).attr('img-data');
+                            $(self).attr('src',realImg);
+                            console.log($(self).parents('.img-wrapper'));
+                            $(self).parents('.img-wrapper').attr('style','');
+                            $(self).parents('.img-wrapper').imgLiquid();
+                        });
                     });
+
+
+
+
+//                    $('.img-data').each(function(){
+//                        var src = $(this).attr('img-data');
+//                        var id = $(this).attr('data-id');
+//                        $(this).replaceWith('<a href="/work?id="'+id+'><img class="work-item" src="'+src+'"/></a>');
+//                    });
 
                     $(".img-wrapper").imgLiquid();
 //                    var afterHtml = '';

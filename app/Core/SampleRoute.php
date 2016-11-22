@@ -44,7 +44,8 @@ class SampleRoute{
      * @param callable $fun
      */
     public function get($route,Closure $fun){
-        if($route == $this->_route){
+        $routeLen = strlen($route);
+        if($route == substr($this->_route,0,$routeLen)){
             $fun();
             exit;
         }
