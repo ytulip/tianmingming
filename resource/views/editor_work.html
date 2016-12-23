@@ -97,6 +97,10 @@
         font-size: 16px;
         width: 100%;
     }
+
+    .drop-target{
+        opacity: .2;
+    }
 </style>
 <div class="sandbox">
     <div class="sandbox-header">
@@ -150,7 +154,7 @@
                         <div style="width: 460px;" class="add-work-list">
 
                             {% for img in imgs %}
-                            <div><div class="work-img-box"><img src="{{ img }}"></div><div class="work-img-opr"><a onclick="deleteWork(this)" style="display: table-cell;vertical-align: middle;text-align: right;"><i class="fa fa-remove"></i>删除</a></div></div>
+                            <div class="work-img-box-container"><div class="work-img-box"><img src="{{ img }}"></div><div class="work-img-opr"><a onclick="deleteWork(this)" style="display: table-cell;vertical-align: middle;text-align: right;"><i class="fa fa-remove"></i>删除</a></div></div>
                             {% endfor %}
 
                             <!--<div>-->
@@ -178,7 +182,123 @@
 {% endblock %}
 {% block script %}
 <script src="/public/assets/js/imgLiquid.js"></script>
+<script src="/public/js/interact.js"></script>
 <script>
+    function dragMoveListener (event) {
+        var target = event.target,
+            // keep the dragged position in the data-x/data-y attributes
+            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+        // translate the element
+//        target.style.zIndex = '99px';
+        target.style.webkitTransform =
+            target.style.transform =
+                'translate(' + x + 'px, ' + y + 'px)';
+        target.style.zIndex = 999;
+
+        // update the posiion attributes
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+    }
+
+    // this is used later in the resizing and gesture demos
+    window.dragMoveListener = dragMoveListener;
+
+    /*图片拖拽的配置*/
+    var draggableParam = {
+        // enable inertial throwing
+        inertia: true,
+        // keep the element within the area of it's parent
+        restrict: {
+            restriction: "parent",
+            endOnly: true,
+            elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+        },
+        // enable autoScroll
+        autoScroll: true,
+        // call this function on every dragmove event
+        onmove: dragMoveListener,
+        // call this function on every dragend event
+        onend: function (event) {
+            var target = event.target;
+            target.style = '';
+            target.removeAttribute('data-x');
+            target.removeAttribute('data-y');
+        }
+    };
+    var dropzoneParam =  {
+        // only accept elements matching this CSS selector
+        accept: '.work-img-box-container',
+        // Require a 75% element overlap for a drop to be possible
+        overlap: 0.75,
+
+        // listen for drop related events:
+
+        ondropactivate: function (event) {
+            // add active dropzone feedback
+            event.target.classList.add('drop-active');
+        },
+        ondragenter: function (event) {
+            var draggableElement = event.relatedTarget,
+                dropzoneElement = event.target;
+
+            /**
+             * duang
+             */
+            dropzoneElement.classList.add('drop-target');
+
+            // feedback the possibility of a drop
+            //dropzoneElement.classList.add('drop-target');
+            //draggableElement.classList.add('can-drop');
+            //draggableElement.textContent = 'Dragged in';
+        },
+        ondragleave: function (event) {
+            // remove the drop feedback style
+            event.target.classList.remove('drop-target');
+            event.relatedTarget.classList.remove('can-drop');
+            //event.relatedTarget.textContent = 'Dragged out';
+        },
+        ondrop: function (event) {
+            var draggableElement = event.relatedTarget,
+                dropzoneElement = event.target;
+
+
+//                                    draggableElement.style = '';
+            draggableElement.removeAttribute('data-x');
+            draggableElement.removeAttribute('data-y');
+
+            var outerHTML = draggableElement.outerHTML;
+            //用这则替换掉work-list-item的style
+            outerHTML = outerHTML.replace(new RegExp('<div class="work-img-box-container"[^>]+>'),'<div class="work-img-box-container">');
+            console.log(outerHTML);
+            dropzoneElement.insertAdjacentHTML('beforeBegin',outerHTML);
+//                                    console.log(draggableElement);
+            $(draggableElement).remove();
+            //reOrderShow();
+            //放置位置
+            //console.log('add');
+//                                    var tmpObj = document.createElement('<div>');
+            //tmpObj.style = '';
+            //dropzoneElement.insertAdjacentHTML('beforeBegin',tmpObj.outerHTML);
+//                                    dropzoneElement.insertBefore(draggableElement);
+//
+//                                    console.log(draggableElement);
+
+            //event.relatedTarget.textContent = 'Dropped';
+        },
+        ondropdeactivate: function (event) {
+            // remove active dropzone feedback
+            event.target.classList.remove('drop-active');
+            event.target.classList.remove('drop-target');
+        }
+    };
+
+
+    /*允许图片拖拽改变顺序*/
+    interact('.work-img-box-container').draggable(draggableParam).dropzone(dropzoneParam);
+
+
 
     function deleteWork(obj){
 //        console.log($(obj));
@@ -227,7 +347,7 @@
                             $(".img-wrapper").imgLiquid();
                         }else{
 
-                            $('#work-img-add').before('<div><div class="work-img-box"><img src="'+data.path+'"/></div><div class="work-img-opr"><a onclick="deleteWork(this)" style="display: table-cell;vertical-align: middle;text-align: right;"><i class="fa fa-remove"></i>删除</a></div></div>');
+                            $('#work-img-add').before('<div class="work-img-box-container"><div class="work-img-box"><img src="'+data.path+'"/></div><div class="work-img-opr"><a onclick="deleteWork(this)" style="display: table-cell;vertical-align: middle;text-align: right;"><i class="fa fa-remove"></i>删除</a></div></div>');
                             $(".work-img-box").imgLiquid();
                         }
 
