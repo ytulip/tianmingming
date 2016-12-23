@@ -88,7 +88,7 @@
                     var listItem = '';
                     console.log(data.data);
                     $.each(data.data,function(key,val){
-                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><a href="/work?id="'+val.id+'><img class="work-item" img-data="'+val.face_img+'" src="/previewimg'+val.face_img+'"/></a></div></div></div>';
+                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><a href="/work?id="'+val.id+'><img class="work-item" img-data="'+val.face_img+'" src="'+val.face_img+'"/></a></div></div></div>';
                     });
 //                    for(var item  in data.data){
 //                        console.log(item);
@@ -96,16 +96,16 @@
 //                    }
                     $('.works-list').append(listItem);
 
-                    $('.work-item').each(function(){
-                        var self = this;
-                        $.loadImage($(this).attr('img-data')).done(function(){
-                            var realImg = $(self).attr('img-data');
-                            $(self).attr('src',realImg);
-                            console.log($(self).parents('.img-wrapper'));
-                            $(self).parents('.img-wrapper').attr('style','');
-                            $(self).parents('.img-wrapper').imgLiquid();
-                        });
-                    });
+//                    $('.work-item').each(function(){
+//                        var self = this;
+//                        $.loadImage($(this).attr('img-data')).done(function(){
+//                            var realImg = $(self).attr('img-data');
+//                            $(self).attr('src',realImg);
+//                            console.log($(self).parents('.img-wrapper'));
+//                            $(self).parents('.img-wrapper').attr('style','');
+//                            $(self).parents('.img-wrapper').imgLiquid();
+//                        });
+//                    });
 
 
 
