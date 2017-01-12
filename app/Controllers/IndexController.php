@@ -77,7 +77,7 @@ class IndexController{
     }
 
     public function admin(){
-        return View::show('admin.html',array());
+        return View::show('new_admin.html',array());
     }
 
     public function savework(){
