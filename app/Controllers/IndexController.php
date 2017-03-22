@@ -26,7 +26,7 @@ class IndexController{
     }
 
     public function home(){
-        return View::show('index/home.html',array());
+        return View::show('index/home_new.html',array());
     }
 
     public function work(){
