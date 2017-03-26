@@ -1,0 +1,22 @@
+body{
+    font-family: "Microsoft YaHei","Century Gothic";
+    background-color: #ffffff;
+}
+
+.share-wrapper{margin:0 auto;width: 838px;background: #FFFFFF;
+    box-shadow: 4px 4px 9px 0 rgba(173,173,173,0.30);}
+
+.share-content{margin:36px auto;width: 547px;}
+
+.share-content article{padding-top: 36px;}
+h1,p{color:#333333;}
+h2{color:#999999;}
+h1{font-size: 28px;text-align: center;font-weight: 100;}
+h2{font-size:14px;text-align: center;font-weight: 100;}
+p{font-size: 16px;}
+
+.share-content article img{width: 100%;}
+@media only screen and  (max-width: 770px) {
+
+}
+

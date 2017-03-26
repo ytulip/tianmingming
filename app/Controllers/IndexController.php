@@ -29,6 +29,10 @@ class IndexController{
         return View::show('index/home_new.html',array());
     }
 
+    public function share(){
+        return View::show('share.html',[]);
+    }
+
     public function work(){
         $object = new WorkModel(IndexController::input('id'));
         return View::show('index/work.html',array(
