@@ -18,6 +18,57 @@ class IndexController{
         ]);
     }
 
+    public function comment(){
+        $comment = new Comment();
+        $insertId = $comment->insert([
+            'comment_context'=>IndexController::input('comment'),
+            'work_id'=>IndexController::input('id'),
+            'nickname'=>IndexController::input('nickname'),
+            'u_email'=>IndexController::input('email'),
+            'created_at'=>date('Y-m-d H:i:s'),
+            'comment_level'=>IndexController::input('comment_level'),
+            'replay_to'=>IndexController::input('replay_to'),
+            'parent_id'=>IndexController::input('parent_id')
+        ]);
+        $object = new Comment($insertId);
+        echo json_encode(['status'=>true,'data'=>[
+            'level'=>$object->comment_level,
+        ]]);
+        exit;
+    }
+
+    public function commentlist(){
+        $lists = DB::select('select * from comment where work_id = ' . IndexController::input('id'));
+        foreach($lists as $key=>$val){
+            $lists[$key]->created_at = \MM\Kits::timeDescribe($val->created_at);
+            $lists[$key]->replay_info = json_encode(['parent_id'=>$val->parent_id?$val->parent_id:$val->id,'replay_to'=>$val->nickname]);
+            $lists[$key]->avatar = \MM\Kits::getAvatar($val->u_email);
+        }
+        $commentList = [];
+        foreach ($lists as $item){
+            if($item->comment_level == '1'){
+                $item->child = [];
+                $commentList[] = $item;
+            }
+        }
+
+
+
+        foreach($lists as $item){
+            if($item->comment_level == '1'){
+                continue;
+            }
+
+            $ind = \MM\Kits::secondaryKeyIndex($commentList,'id',$item->parent_id);
+            if($ind != -1){
+                $commentList[$ind]->child[] = $item;
+            }
+        }
+
+        echo json_encode(['status'=>true,'data'=>$commentList]);
+        exit;
+    }
+
     public function deletework(){
         $object = new WorkModel(IndexController::input('id'));
         $object->delete();
@@ -30,7 +81,11 @@ class IndexController{
     }
 
     public function share(){
-        return View::show('share.html',[]);
+        $object = new TreeHole(IndexController::input('id'));
+        return View::show('share.html',[
+            'article'=>$object->context,
+            'id'=>$object->id
+        ]);
     }
 
     public function work(){

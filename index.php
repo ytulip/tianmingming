@@ -5,6 +5,7 @@
  * date: 2016-07-14
  */
 error_reporting(E_ERROR);
+ini_set('date.timezone','Asia/Shanghai');
 ini_set('display_errors', '1');
 define('app_path','./app');
 define('index_path',__DIR__);

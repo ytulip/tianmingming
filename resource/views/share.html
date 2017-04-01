@@ -12,34 +12,94 @@
 <div class="share-wrapper">
     <div class="share-content">
         <article>
-            <h1>重庆小面</h1>
-            <h2>2017-03-24</h2>
-            <p>
-                重庆小面是重庆面中最简单的一种。狭义的小面是指麻辣素面，分汤面和干溜两种类型，麻辣味型。广义的小面还包括有臊子的面食，如牛肉、肥肠、豌豆杂酱面等。小面富于变化，在面店，可以要求店家制作个人定制口味，如要求店家"干熘"(拌面)、"提黄"(偏生硬)、"加青"(多加蔬菜)、"重辣"(多加油辣子)等等。</p>
-            <p>
-                妈妈的儿子从小爱吃兔头，那时候成都吃兔头的店少，妈妈心疼儿子，便在麻辣烫的锅里煮给儿子吃。倾注着母爱的兔头不仅让儿子解馋了，更上瘾了。儿子天天在店里大快朵颐吃兔头的模样，仿佛一块招牌，也吸引了登门的客人。一传十、十传百，麻辣鲜香的兔头吸引的人越来越多。于是聪明的儿子建议妈妈将小店扩大，专卖兔头。因为大家都亲切而尊敬的称她老妈，店名干脆就叫：“双流老妈兔头”。</p>
-            <p>
-                重庆小面是重庆面中最简单的一种。狭义的小面是指麻辣素面，分汤面和干溜两种类型，麻辣味型。广义的小面还包括有臊子的面食，如牛肉、肥肠、豌豆杂酱面等。小面富于变化，在面店，可以要求店家制作个人定制口味，如要求店家"干熘"(拌面)、"提黄"(偏生硬)、"加青"(多加蔬菜)、"重辣"(多加油辣子)等等。</p>
-            <img src="http://pic.zhuyan.me/1.jpg"/>
-            <p>
-                妈妈的儿子从小爱吃兔头，那时候成都吃兔头的店少，妈妈心疼儿子，便在麻辣烫的锅里煮给儿子吃。倾注着母爱的兔头不仅让儿子解馋了，更上瘾了。儿子天天在店里大快朵颐吃兔头的模样，仿佛一块招牌，也吸引了登门的客人。一传十、十传百，麻辣鲜香的兔头吸引的人越来越多。于是聪明的儿子建议妈妈将小店扩大，专卖兔头。因为大家都亲切而尊敬的称她老妈，店名干脆就叫：“双流老妈兔头”。</p>
-            <img src="http://pic.zhuyan.me/2.jpg"/>
+
+            {{ article | raw }}
+
+            <!--<div class="media-wrapper"><img src="http://pic.zhuyan.me/2.jpg"/></div>-->
         </article>
-        <div class="essay-icon"><a><img src="/images/share.png"/></a><a><img src="/images/fork.png"/></a></div>
 
-        <div class="barrier-line"></div>
-        <div class="essay-comment">
-            <textarea></textarea>
-            <div class="comment-group"><input/><input/></div>
-            <div class="comment-group"><i>邮箱地址不会公开</i></div>
-            <button>发表</button>
-        </div>
-
-        <div class="comment-list">
-            <div class="comment-list-item"></div>
+        <div id="comment-wrapper">
+            <user-comment vid="{{ id }}"></user-comment>
         </div>
     </div>
 </div>
 </body>
-<script src="/public/js/angular.js"></script>
+<script src="/public/assets/js/jquery-1.11.1.js"></script>
+<script src="/public/js/vue.js"></script>
+{{xtemplate('/comment.html','comment-component') |  raw}}
+<script>
+
+ Vue.component('user-comment',{
+     template:'#comment-component',
+     props:['vid'],
+     methods:{
+         publish:function(){
+             (function(a){
+                 $.ajax(
+                     {
+                         url:'/comment',
+                         type:'get',
+                         data:{id:a.id,nickname:a.nickname,comment:a.comment,replay_to:a.replay_to,parent_id:a.parent_id,email:a.email,comment_level:a.comment_level},
+                        success:function(data){
+
+                        },
+                        error:function(){
+
+                        }
+                     }
+                 );
+             })(this);
+         },
+         replay:function(e){
+             var y = $('.essay-comment textarea').offset().top;
+             $("html,body").animate({scrollTop:y},200);
+//             console.log(e.target);
+             var el = $(event.currentTarget);
+             var obj = JSON.parse(el.attr('data-replay'));
+             this.comment = '';
+             this.placeholder = "回复@" + obj.replay_to;
+             this.replay_to = obj.replay_to;
+             this.parent_id = obj.parent_id;
+             this.comment_level = 2;
+         }
+     },
+     data:function(){
+         var datas = {};
+         datas.id = this.vid;
+         datas.nickname = 'childyi';
+         datas.email = '35715872@qq.com';
+         datas.comment = '我只是随便评论一下而已嘛';
+         datas.commentlist = null;
+         datas.placeholder = '敢不敢随便说点啥...';
+         datas.replay_to = '';
+         datas.parent_id = 0;
+         datas.comment_level = 1;
+         return datas;
+     },
+     created:function(){
+         (function(a){
+             $.ajax(
+                 {
+                     url:'/commentlist',
+                     type:'get',
+                     data:{id:a.id},
+                     dataType:'json',
+                     success:function(data){
+                        if(data.status){
+                            a.commentlist = data.data;
+                            console.log(a.commentlist );
+                        }
+                     },
+                     error:function(){
+
+                     }
+                 }
+             );
+         })(this);
+     }
+ });
+ new Vue({
+     el:'#comment-wrapper'
+ });
+</script>
 </html>
