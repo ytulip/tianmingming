@@ -9,6 +9,7 @@
 
 </head>
 <body>
+<div style="display: none;overflow: hidden"><img src=""/></div>
 <div class="share-wrapper">
     <div class="share-content">
         <article>
@@ -17,9 +18,8 @@
 
             <!--<div class="media-wrapper"><img src="http://pic.zhuyan.me/2.jpg"/></div>-->
         </article>
-
         <div id="comment-wrapper">
-            <user-comment vid="{{ id }}"></user-comment>
+            <user-comment vid="{{ id }}" view_num="{{ view_num }}"></user-comment>
         </div>
     </div>
 </div>
@@ -31,8 +31,12 @@
 
  Vue.component('user-comment',{
      template:'#comment-component',
-     props:['vid'],
+     props:['vid','view_num'],
      methods:{
+         praise:function(){
+             $.get('/praise?id=' + this.id);
+             this.praisenum =  parseInt(this.praisenum) + 1;
+         },
          publish:function(){
              (function(a){
                  a.mask = 1;
@@ -83,6 +87,7 @@
          datas.id = this.vid;
          datas.nickname = '';
          datas.email = '';
+         datas.praisenum = this.view_num;
          datas.comment = '';
          datas.commentlist = null;
          datas.placeholder = '敢不敢随便说点啥...';

@@ -161,7 +161,7 @@ article p{
     color: #ffd48b;
     line-height: 20px;}
 
-.essay-icon a{position: relative;}
+.essay-icon a{position: relative;cursor: pointer;}
 .essay-icon span{
     position: absolute;
     top: 62px;

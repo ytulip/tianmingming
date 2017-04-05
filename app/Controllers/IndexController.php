@@ -87,9 +87,18 @@ class IndexController{
         $object = new TreeHole(IndexController::input('id'));
         return View::show('share.html',[
             'article'=>$object->context,
-            'id'=>$object->id
+            'id'=>$object->id,
+            'view_num'=>$object->view_num
         ]);
     }
+
+    public function praise(){
+        $object = new TreeHole(IndexController::input('id'));
+        $object->update(['view_num'=>$object->view_num + 1]);
+        exit;
+    }
+
+
 
     public function work(){
         $object = new WorkModel(IndexController::input('id'));
