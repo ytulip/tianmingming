@@ -6,7 +6,7 @@
 class Model{
     protected $_table;
     protected $_primary_key = 'id';
-    protected $_model_object;
+    public $_model_object;
 
     public $_test = 123;
 

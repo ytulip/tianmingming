@@ -31,9 +31,12 @@ class IndexController{
             'parent_id'=>IndexController::input('parent_id')
         ]);
         $object = new Comment($insertId);
-        echo json_encode(['status'=>true,'data'=>[
-            'level'=>$object->comment_level,
-        ]]);
+        $item = $object->_model_object;
+        $item->created_at = \MM\Kits::timeDescribe($item->created_at);
+        $item->replay_info = json_encode(['parent_id'=>$item->parent_id?$item->parent_id:$item->id,'replay_to'=>$item->nickname]);
+        $item->avatar = \MM\Kits::getAvatar($item->u_email);
+        $item->child = [];
+        echo json_encode(['status'=>true,'data'=>$item]);
         exit;
     }
 

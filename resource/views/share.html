@@ -35,13 +35,28 @@
      methods:{
          publish:function(){
              (function(a){
+                 a.mask = 1;
+                 setTimeout(function(){
+                     a.mask = 0;
+                 },2000);
                  $.ajax(
                      {
                          url:'/comment',
                          type:'get',
                          data:{id:a.id,nickname:a.nickname,comment:a.comment,replay_to:a.replay_to,parent_id:a.parent_id,email:a.email,comment_level:a.comment_level},
+                         dataType:'json',
                         success:function(data){
-
+                            a.comment = '';
+                            if(data.data.comment_level == 1){
+                                a.commentlist.push(data.data);
+                            }else{
+                                $.each(a.commentlist,function (ind,obj) {
+                                    if(obj.id == data.data.parent_id){
+                                        a.commentlist[ind].child.push(data.data);
+                                        return false;
+                                    }
+                                })
+                            }
                         },
                         error:function(){
 
@@ -66,18 +81,20 @@
      data:function(){
          var datas = {};
          datas.id = this.vid;
-         datas.nickname = 'childyi';
-         datas.email = '35715872@qq.com';
-         datas.comment = '我只是随便评论一下而已嘛';
+         datas.nickname = '';
+         datas.email = '';
+         datas.comment = '';
          datas.commentlist = null;
          datas.placeholder = '敢不敢随便说点啥...';
          datas.replay_to = '';
          datas.parent_id = 0;
          datas.comment_level = 1;
+         datas.mask = 0;
          return datas;
      },
      created:function(){
          (function(a){
+             //置空文本框
              $.ajax(
                  {
                      url:'/commentlist',
