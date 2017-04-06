@@ -28,7 +28,7 @@ article p{
 
 .share-content article img{width: 100%;}
 @media only screen and  (max-width: 770px) {
-    .share-wrapper{width: 100%;}
+    .share-wrapper{width: 100%;box-shadow: none;margin-top: 0;}
     .share-content{width: 100%;}
 }
 .essay-icon a{
@@ -168,4 +168,11 @@ article p{
     right: 0;
     left: 0;
     text-align: center;
+}
+
+@media only screen and  (max-width: 770px) {
+    .share-content article{padding-top: 0;}
+    .essay-icon{text-align: center;}
+    input:focus{outline:none;}
+    textarea:focus{outline: none;}
 }
