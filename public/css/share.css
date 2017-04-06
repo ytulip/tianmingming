@@ -171,7 +171,7 @@ article p{
 }
 
 @media only screen and  (max-width: 770px) {
-    .share-content article{padding-top: 0;}
+    .share-content article{padding-top: 0;padding-left: 8px;padding-right: 8px;}
     .essay-icon{text-align: center;}
     input:focus{outline:none;}
     textarea:focus{outline: none;}

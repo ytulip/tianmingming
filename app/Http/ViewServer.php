@@ -13,6 +13,24 @@ class ViewServer{
     private function __construct()
     {
         $loader = new Twig_Loader_Filesystem(resource_path . '/views');
+
+        $function1 = new Twig_SimpleFunction('versionfile', function ($val) {
+            $res = pathinfo($val);
+            $result = $val;
+            switch($res['extension']){
+                case 'css':
+                    $result = '<link rel="stylesheet" type="text/css" href="'.$val.'?version='.env('version',1).'">';
+                    break;
+                case 'js':
+                    $result = '<script src="'.$val.'?version='.env('version',1).'"></script>';
+                    break;
+                default:
+                    break;
+            }
+            return $result;
+        });
+
+
         $function = new Twig_SimpleFunction('xtemplate', function ($val,$id) {
             if(!file_exists(resource_path . '/views' . $val)){
                 return '<script></script>';
@@ -25,6 +43,7 @@ class ViewServer{
             'debug' => true,
         ));
         $this->_twig->addFunction($function);
+        $this->_twig->addFunction($function1);
     }
     //单例方法
     public static function singleton()
