@@ -143,6 +143,12 @@ class IndexController{
         ));
     }
 
+    public function workslazy(){
+        return View::show('index/works_lazy.html',array(
+            'type'=>IndexController::input('type',1)
+        ));
+    }
+
     public function index(){
         return View::show('index.html',array());
     }
@@ -152,7 +158,7 @@ class IndexController{
     }
 
     public function savework(){
-        $filename = \MM\Kits::getMillisecond() . '.jpg';
+        $filename = \MM\Kits::getMillisecond() . '.' . PostImage::getExt();
         PostImage::save(index_path . '/images/work/' . $filename);
         echo json_encode(array('status'=>true,'path'=>'/images/work/' . $filename,'type'=>IndexController::input('type',1)));
         exit;

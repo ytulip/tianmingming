@@ -1,0 +1,165 @@
+{% extends "_layout/index.html" %}
+{% block style%}
+<style>
+    .veil ul li:nth-child(3) a{
+        color:#FFD48B;
+    }
+
+    @media only screen and (min-width: 1200px) {
+        .sandbox-content {
+            padding-left: 145px;
+            padding-right: 145px;
+        }
+    }
+
+
+    .works-type li:nth-child({{ type }}) a{  color:#FFD48B;  }
+</style>
+{% endblock %}
+{% block pageTitle %}<div style="text-align: center;"><span style="line-height: 34px;font-size: 26px;font-family: FZLTXHB--B51-0;color: #333333;">WORKS</span></div>{% endblock %}
+{% block body %}
+<div class="sandbox-content">
+    <div class="works-menu">
+        <ul class="works-type">
+            <li><a href="works">全部</a></li>
+            <li><a href="/works?type=2">UI</a></li>
+            <li><a href="/works?type=3">手绘</a></li>
+            <li><a href="/works?type=4">动画</a></li>
+            <li><a href="/works?type=5">摄影</a></li>
+        </ul>
+    </div>
+    <div class="works-list">
+
+    </div>
+</div>
+<div style="width: 320px;height: 320px;" id="img_paper">
+    <img src="/dmo.jpg" style="width: 100%;height: 100%;">
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/public/assets/js/imgLiquid.js"></script>
+<script>
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+
+    $.createCache = function( requestFunction ) {
+        var cache = {};
+        return function( key, callback ) {
+            if ( !cache[ key ] ) {
+                cache[ key ] = $.Deferred(function( defer ) {
+                    requestFunction( defer, key );
+                }).promise();
+            }
+            return cache[ key ].done( callback );
+        };
+    }
+
+    $.loadImage = $.createCache(function( defer, url ) {
+        var image = new Image();
+        function cleanUp() {
+            image.onload = image.onerror = null;
+        }
+        defer.then( cleanUp, cleanUp );
+        image.onload = function() {
+            defer.resolve( url );
+        };
+        image.onerror = defer.reject;
+        image.src = url;
+    });
+
+
+    $.loadImage('http://dev.jieqianme.com/dmo.jpg').done(function(){
+        console.log('done');
+    });
+
+
+    /*加载works*/
+    function refreshWork(){
+        $.ajax({
+            url:'/worklist',
+            data:{type:getQueryString('type')},
+            dataType:'json',
+            success:function(data){
+                if(data.status){
+                    var listItem = '';
+                    console.log(data.data);
+                    $.each(data.data,function(key,val){
+                        listItem += '<div><div class="img-wrapper" data-title="'+val.title+'" data-abstract="'+val.abstract+'" data-id='+val.id+'><a href="/work?id="'+val.id+'><img class="work-item" img-data="'+val.face_img+'" src="'+val.face_img+'"/></a></div></div></div>';
+                    });
+//                    for(var item  in data.data){
+//                        console.log(item);
+//                        listItem += '<div><div class="img-wrapper"><div class="img-data" img-data="'+item.face_img+'"/></div></div></div>';
+//                    }
+                    $('.works-list').append(listItem);
+
+                    $('.work-item').each(function(){
+                        console.log(123);
+                        var self = this;
+                        $.loadImage($(this).attr('img-data')).done(function(){
+                            var realImg = $(self).attr('img-data');
+                            $(self).attr('src',realImg);
+                            console.log($(self).parents('.img-wrapper'));
+                            $(self).parents('.img-wrapper').attr('style','');
+                            $(self).parents('.img-wrapper').imgLiquid();
+                        });
+                    });
+
+
+
+
+//                    $('.img-data').each(function(){
+//                        var src = $(this).attr('img-data');
+//                        var id = $(this).attr('data-id');
+//                        $(this).replaceWith('<a href="/work?id="'+id+'><img class="work-item" src="'+src+'"/></a>');
+//                    });
+
+                    $(".img-wrapper").imgLiquid();
+//                    var afterHtml = '';
+//                    var imgArr = data.data.imgs.split(',');
+//                    console.log(imgArr);
+//                    $.each(imgArr,function(ind,obj){
+//                        afterHtml += '<img style="max-width: 100%;margin-bottom:28px;" src="'+obj+'">';
+//                    });
+//                    $('#work-panel').html(afterHtml);
+//                    $('#work-title').html(data.data.title);
+                }
+            },
+            error:function(){
+            }
+        });
+    }
+
+
+
+    $(function(){
+//        $('.img-data').each(function(){
+//            var src = $(this).attr('img-data');
+//            $(this).replaceWith('<img class="work-item" src="'+src+'"/>');
+//        });
+//
+//        $(".img-wrapper").imgLiquid();
+
+        $('body').on('mouseover','.img-wrapper',function(){
+            if($(this).find('.work-item-shade').length){
+                return;
+            }else{
+                $(this).append('<div class="work-item-shade" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:99;background-color:#000000;opacity: .6;"><a style="display: table;height: 100%;width: 100%;" href="/work?id='+$(this).attr('data-id')+'"><div style="display: table-cell;vertical-align: middle"><h3>'+$(this).attr('data-title')+'</h3><p>'+$(this).attr('data-abstract')+'</p></div></a></div>');
+                return;
+            }
+        });
+
+
+        $('body').on('mouseleave','.img-wrapper',function(){
+//            console.log(4);
+            $(this).find('.work-item-shade').remove();
+        });
+
+        refreshWork();
+    });
+</script>
+{% endblock %}
