@@ -12,6 +12,10 @@ class DB{
 //        var_dump($sqlStatement);
 //        exit;
         $pdoStatment = self::query($sqlStatement);
+        if(!$pdoStatment)
+        {
+            return null;
+        }
         $row = $pdoStatment -> fetchAll(PDO::FETCH_OBJ);
         return $row;
     }

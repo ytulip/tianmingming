@@ -250,4 +250,30 @@ class IndexController{
         }
     }
 
+    public static function vedioPreview()
+    {
+        $vedioPath = IndexController::input('vedio_path');
+
+        $res = DB::select(sprintf("select * from %s where %s = %s","vedio_img","vedio_path",$vedioPath));
+        if( $res ) {
+            echo $res[0]->img_path;
+            exit;
+        }
+
+
+        $array = explode('.',$vedioPath);
+        $imgPath = str_replace(end($array),'jpg',$vedioPath);
+
+        $execStr = "ffmpeg -ss 00:00:10  -i ".index_path."{$vedioPath} ".index_path."{$imgPath}  -r 1 -vframes 1 -an -f mjpeg";
+//        echo $execStr;
+//        exit;
+        $res = exec($execStr);
+//        var_dump($res);
+//        $object->update(\MM\MArray::arrayOnly($_REQUEST,['title','abstract','describe','face_img','type','imgs']));
+        $vedioImg = new VedioImg();
+        $vedioImg->insert(['vedio_path'=>$vedioPath,'img_path'=>$imgPath]);
+        echo json_encode(['status'=>true,'data'=>$imgPath]);
+        exit;
+    }
+
 }
