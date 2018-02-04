@@ -102,11 +102,18 @@ class IndexController{
 
     public function work(){
         $object = new WorkModel(IndexController::input('id'));
+        $imgs = json_decode($object->imgs,true);
+        $imgsType = [];
+        foreach ( $imgs as $key=>$img) {
+            $imgs[$key] = str_replace('jpg','mp4',$img);
+            $imgsType[] = strpos($img,'/server/upload')?0:1;
+        }
         return View::show('index/work.html',array(
             'type'=>$object->type,
             'title'=>$object->title,
             'describe'=>$object->describe,
-            'imgs'=>json_decode($object->imgs,true)
+            'imgs'=>$imgs,
+            'imgs_type'=>$imgsType
         ));
     }
 

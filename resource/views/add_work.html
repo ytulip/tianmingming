@@ -172,7 +172,7 @@
     </div>
 </div>
 
-<div style="position: fixed;top:0;right:0;bottom:0;left:0;">
+<div style="position: fixed;top:0;right:0;bottom:0;left:0;display: none;" id="video_panel">
     <div style="position:absolute;top:0;right:0;bottom:0;left:0;background: rgba(22,22,33,.8);">
     </div>
     <div style="transform: translate(-50%,-50%);-webkit-transform: translate(-50%,-50%);position: absolute;top:50%;left: 50%;background-color: #ffffff;border-radius: 4px;padding: 30px;">
@@ -213,6 +213,10 @@
 //        $('body').on('click','',function(){
 //            $(this).
 //        });
+    });
+
+    $('#up-work-vedio').click(function(){
+        $('#video_panel').show();
     });
 
     /**
@@ -362,7 +366,12 @@
             data:{vedio_path:vedioPath},
             dataType:'json',
             success:function(data){
-                
+                if(data.status) {
+                    //把预览图当成图片
+                    $('#video_panel').hide();
+                    $('#work-img-add').before('<div><div class="work-img-box"><img src="'+data.data+'"/></div><div class="work-img-opr"><a onclick="deleteWork(this)" style="display: table-cell;vertical-align: middle;text-align: right;"><i class="fa fa-remove"></i>删除</a></div></div>');
+                    $(".work-img-box").imgLiquid();
+                }
             },
             error:function()
             {
