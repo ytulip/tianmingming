@@ -105,7 +105,10 @@ class IndexController{
         $imgs = json_decode($object->imgs,true);
         $imgsType = [];
         foreach ( $imgs as $key=>$img) {
-            $imgs[$key] = str_replace('jpg','mp4',$img);
+            if(strpos($img,'/server/upload') !== false) {
+                $imgs[$key] = str_replace('jpg','mp4',$img);
+            }
+//            $imgs[$key] = str_replace('jpg','mp4',$img);
             $imgsType[] = strpos($img,'/server/upload')?0:1;
         }
         return View::show('index/work.html',array(
