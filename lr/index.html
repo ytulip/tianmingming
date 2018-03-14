@@ -32,7 +32,7 @@
 
             <p style="text-align: center;"><span>请认真填写后提交信息，</span><br/><span>见到“提交成功”后，可关闭页面</span></p>
 
-            <form role="form" style="padding: 8px;">
+            <form role="form" style="padding: 8px;" id="data_form">
                 <div class="form-group">
                     <label>堂次<span class="fbc_required" tabindex="-1" aria-label="(必填)" data-reactid=".0.0.0:$c200814608.0.0.2">*</span></label>
                     <div class="radio">
@@ -60,7 +60,7 @@
 
                 <div class="form-group">
                     <label for="pwd">姓名<span class="fbc_required">*</span></label>
-                    <input id="pwd" type="password" class="form-control" required>
+                    <input id="pwd" class="form-control" required>
                 </div>
 
                 <div class="form-group">
@@ -84,7 +84,7 @@
 
                 <div class="form-group">
                     <label for="pwd">籍贯<span class="fbc_required">*</span></label>
-                    <select class="form-control"><option value="">请选择</option><option value="110000">北京市</option><option value="120000">天津市</option><option value="130000">河北省</option><option value="140000">山西省</option><option value="150000">内蒙古自治区</option><option value="210000">辽宁省</option><option value="220000">吉林省</option><option value="230000">黑龙江省</option><option value="310000">上海市</option><option value="320000">江苏省</option><option value="330000">浙江省</option><option value="340000">安徽省</option><option value="350000">福建省</option><option value="360000">江西省</option><option value="370000">山东省</option><option value="410000">河南省</option><option value="420000">湖北省</option><option value="430000">湖南省</option><option value="440000">广东省</option><option value="450000">广西省</option><option value="460000">海南省</option><option value="500000">重庆市</option><option value="510000">四川省</option><option value="520000">贵州省</option><option value="530000">云南省</option><option value="540000">西藏自治区</option><option value="610000">陕西省</option><option value="620000">甘肃省</option><option value="630000">青海省</option><option value="640000">宁夏省</option><option value="650000">新疆</option></select>
+                    <select class="form-control" name="province"><option value="">请选择</option><option value="北京市">北京市</option><option value="天津市">天津市</option><option value="河北省">河北省</option><option value="山西省">山西省</option><option value="内蒙古自治区">内蒙古自治区</option><option value="辽宁省">辽宁省</option><option value="吉林省">吉林省</option><option value="黑龙江省">黑龙江省</option><option value="上海市">上海市</option><option value="江苏省">江苏省</option><option value="浙江省">浙江省</option><option value="安徽省">安徽省</option><option value="福建省">福建省</option><option value="江西省">江西省</option><option value="山东省">山东省</option><option value="河南省">河南省</option><option value="湖北省">湖北省</option><option value="湖南省">湖南省</option><option value="广东省">广东省</option><option value="广西省">广西省</option><option value="海南省">海南省</option><option value="重庆市">重庆市</option><option value="四川省">四川省</option><option value="贵州省">贵州省</option><option value="云南省">云南省</option><option value="西藏自治区">西藏自治区</option><option value="陕西省">陕西省</option><option value="甘肃省">甘肃省</option><option value="青海省">青海省</option><option value="宁夏省">宁夏省</option><option value="新疆">新疆</option></select>
                 </div>
 
                 <div class="form-group">
@@ -97,12 +97,12 @@
 
                 <div class="form-group">
                     <label for="pwd">手机<span class="fbc_required">*</span></label>
-                    <input i type="password" class="form-control" required>
+                    <input class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label for="pwd">地址<span class="fbc_required"></span></label>
-                    <input i type="password" class="form-control" required>
+                    <input class="form-control" required>
                 </div>
 
                 <div style="text-align: center;border-bottom: 1px dashed
@@ -246,7 +246,7 @@
                 </div>
 
                 <div style="text-align: center;">
-                    <button type="button" class="btn btn-success">提交</button>
+                    <button type="button" class="btn btn-success" id="next_step">提交</button>
                 </div>
             </form>
 
@@ -254,7 +254,10 @@
         </div>
     </div>
 </body>
+<script src="assets/js/jquery.min.js"></script>
 <script src="assets/layDate-v5.0.9/laydate/laydate.js"></script>
+<script src="assets/js/jquery.serializejson.min.js"></script>
+<script src="assets/js/common.js"></script>
 <script>
     //执行一个laydate实例
     laydate.render({
@@ -264,6 +267,20 @@
     laydate.render({
         elem: '#test2' //指定元素
     });
+
+
+    new SubmitButton(
+        {
+            prepositionJudge:function()
+            {
+                console.log($('#data_form').serialize());
+                return false;
+            },
+            selectorStr:'#next_step',
+
+
+        }
+    );
 
 </script>
 </html>
