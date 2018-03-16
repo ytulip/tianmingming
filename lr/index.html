@@ -241,8 +241,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>接待日期</label>
-                    <input class="form-control" id="test2" onfocus="this.blur();"/>
+                    <label>接待日期<span class="fbc_required" tabindex="-1" aria-label="(必填)" data-reactid=".0.0.0:$c200814608.0.0.2">*</span></label>
+                    <input class="form-control" id="test2" name="reception_date" onfocus="this.blur();"/>
                 </div>
 
                 <div style="text-align: center;">
@@ -316,6 +316,12 @@
                 if(!$('input[name="preach"]').val())
                 {
                     mAlert('布道者未填');
+                    return false;
+                }
+
+                if(!$('input[name="reception_date"]').val())
+                {
+                    mAlert('接待日期未填');
                     return false;
                 }
 
